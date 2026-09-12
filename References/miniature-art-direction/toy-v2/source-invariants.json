@@ -1,0 +1,62 @@
+{
+  "checkedAtUTC": "2026-09-12T21:02:52.598569+00:00",
+  "scope": "Current toy-sailboat request baseline",
+  "checks": [
+    {
+      "file": "SmallWave/Core/LiquidSimulation.swift",
+      "status": "PASS",
+      "sha256": "1392c3370f794009f860fcf8f4c888fa6e3a0903233da2e95117f5ec629e04d0"
+    },
+    {
+      "file": "SmallWave/App/MotionInput.swift",
+      "status": "PASS",
+      "sha256": "f2580a595cc13028de922abe422b72f14156842573b42926403ff7618495fd08"
+    },
+    {
+      "file": "SmallWave/App/MotionInputHistory.swift",
+      "status": "PASS",
+      "sha256": "be661f7e6f9bfcc17e4c05003409fad77fda79f2c573870bb4ace67b4e019de4"
+    },
+    {
+      "file": "SmallWave/App/SensoryFeedback.swift",
+      "status": "PASS",
+      "sha256": "104f5567cf923da0f8a266893eb0c0c883cc32e2c055259152009d506d40cfed"
+    },
+    {
+      "file": "SmallWave/Rendering/LiquidMetalView.swift",
+      "status": "PASS",
+      "sha256": "7c4ec9ccb2a203cf9b320f0766083cbaded1f2331edeaebccd15b8f632280536"
+    },
+    {
+      "file": "SmallWave/Rendering/LiquidVolumeField.swift",
+      "status": "PASS",
+      "sha256": "6702db62368b53696c8f2db6980e98d67af82ac69ab99cba13cece503360e45b"
+    },
+    {
+      "file": "SmallWave/Rendering/LiquidVolumeField.metal",
+      "status": "PASS",
+      "sha256": "91156972e9cf084940a6d3d62fe1134e081b0ff5ac5efca0a5831b8c8f805bdd"
+    },
+    {
+      "file": "SmallWave/Rendering/LiquidVolumeRenderer.swift",
+      "status": "PASS",
+      "sha256": "721470c4b5ca12c21f1378bb07e6787736d914908ffb12ac80e36c2602338c50"
+    },
+    {
+      "file": "SmallWave/Rendering/MobileVolumeOptics.metal",
+      "status": "PASS",
+      "sha256": "b89747a01bfc1aa8e1c88bc9b2bbc52a5ecddf69f66cdab7b346417483307e07"
+    },
+    {
+      "file": "SmallWave/App/OceanView.swift",
+      "status": "PASS",
+      "method": "Identical after one art-picker section title substitution; UI composition unchanged"
+    },
+    {
+      "file": "SmallWave/Rendering/LiquidShaders.metal",
+      "status": "PASS",
+      "method": "Only craftedMiniature sampling/material changed; other shader functions including contact cue identical"
+    }
+  ],
+  "concurrentWork": "The other same-workspace task owns FrameTimingProbe.swift and LiquidRenderer timing instrumentation; excluded from claims about this art change."
+}

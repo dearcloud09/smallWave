@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>smallwave — 작고 둥근, 세 가지 색</title>
+<style>
+:root{color-scheme:light;--paper:#f5f2eb;--ink:#293e42;--muted:#647373;--line:#d4d8d1}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.65 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif}
+main{max-width:1326px;margin:auto;padding:38px 24px 55px}header{padding-bottom:22px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:11px;letter-spacing:.14em;color:var(--muted)}h1{font:400 36px/1.3 Georgia,"AppleMyungjo",serif;letter-spacing:-1px;margin:13px 0}p{margin:8px 0;max-width:850px}.quiet{color:var(--muted)}
+.toolbar{position:sticky;top:0;z-index:3;background:rgba(245,242,235,.98);padding:15px 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
+button{appearance:none;border:1px solid var(--line);background:transparent;border-radius:6px;padding:10px 14px;font:inherit;color:var(--ink);cursor:pointer;min-height:44px}button[aria-pressed=true],button:hover{color:white;background:var(--ink);border-color:var(--ink)}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #b07a29;outline-offset:3px}
+#status{font-size:12px;color:var(--muted);margin-left:auto}.comparison{display:grid;grid-template-columns:repeat(3,402px);gap:18px;overflow-x:auto;scroll-snap-type:x proximity;padding:24px 1px}.comparison article{scroll-snap-align:start}
+h2{font-size:19px;letter-spacing:-.5px;font-weight:500;margin:0 0 5px}.swatch{display:inline-block;width:13px;height:13px;border-radius:50%;margin-right:10px}.caption{color:var(--muted);font-size:12px;margin:0 0 14px}
+.phone{width:402px;height:874px;position:relative;overflow:hidden;border-radius:28px;background:#e1e3e2;box-shadow:0 0 0 1px #c8d0cb;isolation:isolate}.phone img,.phone video{position:absolute;inset:0;display:block;width:402px;height:874px;object-fit:fill}.phone video{visibility:hidden}body.playing .phone video{visibility:visible}body.playing .phone img{visibility:hidden}
+.brand{position:absolute;left:27px;right:27px;top:65px;display:flex;align-items:baseline;justify-content:space-between;color:#294247;pointer-events:none}.brand b{font:24px Georgia,serif;letter-spacing:-.8px}.brand span{font-size:10px;opacity:.6;letter-spacing:.5px}.foot{position:absolute;bottom:40px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:2.3px;color:#294247;opacity:.7;pointer-events:none}
+.native .brand,.native .foot{display:none}.description{padding:13px 2px 0;font-size:13px}.evaluation{border-top:1px solid var(--line);padding-top:24px;margin-top:9px}h3{font-size:20px;font-weight:500;margin:0 0 9px}table{width:100%;border-collapse:collapse;font-size:13px;margin:18px 0}th,td{text-align:left;vertical-align:top;padding:12px 18px 12px 0;border-bottom:1px solid var(--line)}th{font-weight:500;color:var(--muted)}
+details{margin:20px 0}summary{cursor:pointer;padding:11px 0;font-size:15px}.inspection{display:flex;align-items:center;gap:28px;flex-wrap:wrap}.inspection img{width:360px;max-width:100%;background:#e7e6e0;border-radius:8px}.inspection p{max-width:560px}.technical{font-size:12px;color:var(--muted)}a{color:inherit;text-underline-offset:3px}
+@media(max-width:700px){main{padding:24px 16px}h1{font-size:29px}.comparison{margin-inline:-16px;padding-inline:0;gap:16px}#status{margin:2px 0;width:100%}table{font-size:12px}th,td{padding-right:10px}}
+</style>
+<body class="native">
+<main>
+<header><div class="eyebrow">SMALLWAVE / TOY SAILBOAT / 02</div><h1>작고 둥근, 세 가지 색</h1>
+<p>짧고 넓은 나무 선체, 낮은 돛대, 상아색 천 돛 하나. 같은 작은 배에 파랑·노랑·빨강을 입혔어.</p>
+<p class="quiet">첨부 레퍼런스의 비례와 손으로 만든 질감을 따라, 구명환 하나가 달린 작은 장면으로.</p></header>
+<div class="toolbar" aria-label="같은 물 상태에서 비교">
+<button data-pose="native" aria-pressed="true">앱 화면</button><button data-pose="rest" aria-pressed="false">정지</button><button data-pose="tilt" aria-pressed="false">기울임</button><button data-pose="shake" aria-pressed="false">흔들림</button><button data-pose="inverted" aria-pressed="false">뒤집힘</button><button data-pose="flat" aria-pressed="false">눕힘</button><button id="motion" aria-pressed="false">6초 움직임</button>
+<span id="status" role="status">실제 앱 · 402 × 874 논리 크기</span></div>
+<div class="comparison">
+<article data-style="toy-blue"><h2><span class="swatch" style="background:#346487"></span>A · 마린 블루</h2><p class="caption">파란 도장 / 상아색 띠 / 빨간 구명환</p>
+<div class="phone"><img src="toy-blue-rest.png" alt="상아색 돛과 작은 빨간 구명환을 단 둥근 파란 나무 배" width="402" height="874"><video src="toy-blue-motion.mp4" muted playsinline preload="metadata" aria-label="파란 배의 동일 기울임 시퀀스"></video><div class="brand"><b>smallwave</b><span>네 손안의 작은 바다</span></div><div class="foot">BLUE, YOURS.</div></div>
+<p class="description">레퍼런스에 가장 가까운 색. 파란 액체와 차분하게 이어지고, 밝은 띠와 빨간 구명환이 선체를 구분해 줘.</p></article>
+<article data-style="toy-yellow"><h2><span class="swatch" style="background:#d8ac52"></span>B · 햇살 옐로</h2><p class="caption">노란 도장 / 상아색 띠 / 빨간 구명환</p>
+<div class="phone"><img src="toy-yellow-rest.png" alt="상아색 돛과 작은 빨간 구명환을 단 둥근 노란 나무 배" width="402" height="874"><video src="toy-yellow-motion.mp4" muted playsinline preload="metadata" aria-label="노란 배의 동일 기울임 시퀀스"></video><div class="brand"><b>smallwave</b><span>네 손안의 작은 바다</span></div><div class="foot">BLUE, YOURS.</div></div>
+<p class="description">작은 크기에서도 둥근 선체가 가장 밝게 드러나. 따뜻한 노란 도장과 파란 물의 대비가 부드러운 형태를 살려 줘.</p></article>
+<article data-style="toy-red"><h2><span class="swatch" style="background:#b44c36"></span>C · 브릭 레드</h2><p class="caption">빨간 도장 / 상아색 띠 / 남색 구명환</p>
+<div class="phone"><img src="toy-red-rest.png" alt="상아색 돛과 작은 남색 구명환을 단 둥근 빨간 나무 배" width="402" height="874"><video src="toy-red-motion.mp4" muted playsinline preload="metadata" aria-label="빨간 배의 동일 기울임 시퀀스"></video><div class="brand"><b>smallwave</b><span>네 손안의 작은 바다</span></div><div class="foot">BLUE, YOURS.</div></div>
+<p class="description">붉은 선체가 작은 포인트로 남아. 구명환은 남색으로 바꿔 같은 색끼리 섞이지 않게 했어.</p></article>
+</div>
+<section class="evaluation"><h3>폰 크기에서 비교하면</h3>
+<p>기본 방향은 <strong>A · 마린 블루</strong>로 두었어. 더 작게 보여도 선체가 잘 읽히는 쪽은 <strong>B · 햇살 옐로</strong>, 시선을 끄는 작은 포인트로는 <strong>C · 브릭 레드</strong>가 좋아.</p>
+<table><thead><tr><th>같이 유지한 것</th><th>달라지는 것</th><th>이 크기에서 읽는 것</th></tr></thead><tbody>
+<tr><td>그릇형 선체와 짧은 돛대<br>돛 하나 · 나무 테두리 · 밧줄 · 구명환</td><td>선체 도장 색<br>빨간 배의 구명환 색</td><td>둥근 윤곽, 돛의 부피, 선체의 띠, 구명환<br>목재 결과 천 짜임은 가까이 볼 때 드러나</td></tr>
+<tr><td>약 71pt 선체 폭<br>동일한 물리 상태와 잠기는 위치</td><td>색 대비와 장면의 온도</td><td>선체 아래쪽의 물속 색 변화<br>수면 접점과 기울임 뒤에 따라오는 배</td></tr></tbody></table></section>
+<details><summary>나무와 천 질감 가까이 보기</summary><div class="inspection"><img src="toy-boat-source.png" alt="세 색상에 공통으로 쓰는 투명 배 원본"><div><p>선체는 하나의 원본을 공유해. 색을 바꿔도 돛의 기울기, 구명환 크기, 배의 윤곽은 같아.</p><p class="quiet">짧은 나무 돛대, 부드러운 천 한 장, 닳은 도장과 구명환. 배경과 수면은 원본에 포함하지 않았어.</p></div></div></details>
+<details class="technical"><summary>표시 크기와 확인 범위</summary>
+<p>‘앱 화면’은 iPhone 17 Pro 시뮬레이터의 실제 앱 캡처(1206 × 2622 px)야. 일시 정지한 채 설정에서 세 색상을 전환했고 UI 구성은 유지했어. 다른 자세와 영상은 앱의 Metal 렌더러가 만든 804 × 1748 px 출력이며 글자는 비교용 오버레이야. 모두 402 × 874 CSS px로 표시해. 데스크톱의 물리적인 mm 크기는 화면 배율에 따라 달라져. 폭이 좁으면 가로로 넘겨 같은 크기로 비교할 수 있어.</p>
+<p>세 색상은 동일한 물 상태에서 렌더돼. 배의 위치·각도·깊이, 기존 부력과 관성, 액체 굴절과 접촉 표현을 함께 사용해. 6초 영상은 합성 기울임 입력을 쓴 렌더 검증이며 실제 iPhone 센서의 성능 측정은 아니야.</p>
+<p>배는 투명 이미지 기반의 물체라 회전할 때 새로운 옆면을 드러내는 3D 모델은 아니야. 재질과 물속 합성은 실제 앱 경로를 사용해.</p>
+<p><a href="verification.json">렌더 검증</a> · <a href="motion-trace.json">동일 상태·관성 기록</a> · <a href="README.md">변경과 검증 기록</a> · <a href="../">앞선 아트 방향</a></p></details>
+</main>
+<script>
+const articles=[...document.querySelectorAll('article')],videos=[...document.querySelectorAll('video')],motion=document.querySelector('#motion'),status=document.querySelector('#status');let pose='native',playing=false;
+function stop(){playing=false;videos.forEach(v=>v.pause());document.body.classList.remove('playing');motion.setAttribute('aria-pressed','false');motion.textContent='6초 움직임';}
+function show(){const native=pose==='native';document.body.classList.toggle('native',native);articles.forEach(a=>{a.querySelector('img').src=native?`native-${a.dataset.style.replace('toy-','')}.png`:`${a.dataset.style}-${pose}.png`;});status.textContent=native?'실제 앱 · 402 × 874 논리 크기':'402 × 874 · 폰 논리 크기';}
+document.querySelectorAll('[data-pose]').forEach(b=>b.addEventListener('click',()=>{stop();pose=b.dataset.pose;document.querySelectorAll('[data-pose]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));show();}));
+motion.addEventListener('click',async()=>{if(playing){stop();show();return;}videos.forEach(v=>v.currentTime=0);try{await Promise.all(videos.map(v=>v.play()));playing=true;document.body.classList.remove('native');document.body.classList.add('playing');motion.setAttribute('aria-pressed','true');motion.textContent='움직임 멈추기';status.textContent='동일 입력 · 30fps · 6초';}catch(e){stop();show();status.textContent='영상을 열지 못했어. 정지 비교를 이용해줘.';}});
+videos[0].addEventListener('ended',()=>{stop();show();});document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();show();}});
+show();
+</script>
+</body>
+</html>

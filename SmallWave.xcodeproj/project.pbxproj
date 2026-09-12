@@ -1,0 +1,469 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000026 /* FrameTimingProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000026 /* FrameTimingProbe.swift */; };
+		A10000000000000000000025 /* MotionInputHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000025 /* MotionInputHistory.swift */; };
+		A10000000000000000000024 /* Miniatures in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000024 /* Miniatures */; };
+		A10000000000000000000001 /* SmallWaveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* SmallWaveApp.swift */; };
+		A10000000000000000000002 /* OceanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* OceanView.swift */; };
+		A10000000000000000000003 /* MotionInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* MotionInput.swift */; };
+		A10000000000000000000004 /* SensoryFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* SensoryFeedback.swift */; };
+		A10000000000000000000005 /* LiquidSimulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* LiquidSimulation.swift */; };
+		A10000000000000000000006 /* OceanStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* OceanStyle.swift */; };
+		A10000000000000000000007 /* LiquidMetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* LiquidMetalView.swift */; };
+		A10000000000000000000008 /* LiquidRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* LiquidRenderer.swift */; };
+		A10000000000000000000009 /* LiquidShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* LiquidShaders.metal */; };
+		A10000000000000000000010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* Assets.xcassets */; };
+		A10000000000000000000011 /* SmallWaveWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000011 /* SmallWaveWidget.swift */; };
+		A10000000000000000000012 /* SmallWaveWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* SmallWaveWidgetBundle.swift */; };
+		A10000000000000000000013 /* SmallWaveWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000014 /* SmallWaveWidget.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10000000000000000000020 /* LiquidVolumeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000020 /* LiquidVolumeField.swift */; };
+		A10000000000000000000021 /* LiquidVolumeField.metal in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000021 /* LiquidVolumeField.metal */; };
+		A10000000000000000000022 /* LiquidVolumeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000022 /* LiquidVolumeRenderer.swift */; };
+		A10000000000000000000023 /* MobileVolumeOptics.metal in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000023 /* MobileVolumeOptics.metal */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A30000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A40000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A50000000000000000000002;
+			remoteInfo = SmallWaveWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A60000000000000000000001 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A10000000000000000000013 /* SmallWaveWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000027 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/Signing.xcconfig; sourceTree = "<group>"; };
+		A20000000000000000000026 /* FrameTimingProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameTimingProbe.swift; sourceTree = "<group>"; };
+		A20000000000000000000025 /* MotionInputHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionInputHistory.swift; sourceTree = "<group>"; };
+		A20000000000000000000024 /* Miniatures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Miniatures; sourceTree = "<group>"; };
+		A20000000000000000000001 /* SmallWaveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWaveApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* OceanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanView.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* MotionInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionInput.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* SensoryFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensoryFeedback.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* LiquidSimulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidSimulation.swift; sourceTree = "<group>"; };
+		A20000000000000000000006 /* OceanStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanStyle.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* LiquidMetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidMetalView.swift; sourceTree = "<group>"; };
+		A20000000000000000000008 /* LiquidRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidRenderer.swift; sourceTree = "<group>"; };
+		A20000000000000000000009 /* LiquidShaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = LiquidShaders.metal; sourceTree = "<group>"; };
+		A20000000000000000000010 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000000000000000000011 /* SmallWaveWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWaveWidget.swift; sourceTree = "<group>"; };
+		A20000000000000000000012 /* SmallWaveWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWaveWidgetBundle.swift; sourceTree = "<group>"; };
+		A20000000000000000000013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20000000000000000000014 /* SmallWaveWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SmallWaveWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000015 /* SmallWave.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmallWave.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20000000000000000000020 /* LiquidVolumeField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidVolumeField.swift; sourceTree = "<group>"; };
+		A20000000000000000000021 /* LiquidVolumeField.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = LiquidVolumeField.metal; sourceTree = "<group>"; };
+		A20000000000000000000022 /* LiquidVolumeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidVolumeRenderer.swift; sourceTree = "<group>"; };
+		A20000000000000000000023 /* MobileVolumeOptics.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MobileVolumeOptics.metal; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A60000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A60000000000000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A70000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000027 /* Signing.xcconfig */,
+				A70000000000000000000002 /* SmallWave */,
+				A70000000000000000000006 /* SmallWaveWidget */,
+				A70000000000000000000007 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A70000000000000000000002 /* SmallWave */ = {
+			isa = PBXGroup;
+			children = (
+				A70000000000000000000003 /* App */,
+				A70000000000000000000004 /* Core */,
+				A70000000000000000000005 /* Rendering */,
+				A20000000000000000000010 /* Assets.xcassets */,
+				A20000000000000000000024 /* Miniatures */,
+				A20000000000000000000013 /* Info.plist */,
+			);
+			path = SmallWave;
+			sourceTree = "<group>";
+		};
+		A70000000000000000000003 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000001 /* SmallWaveApp.swift */,
+				A20000000000000000000002 /* OceanView.swift */,
+				A20000000000000000000003 /* MotionInput.swift */,
+				A20000000000000000000025 /* MotionInputHistory.swift */,
+				A20000000000000000000004 /* SensoryFeedback.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A70000000000000000000004 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000005 /* LiquidSimulation.swift */,
+				A20000000000000000000006 /* OceanStyle.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		A70000000000000000000005 /* Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000007 /* LiquidMetalView.swift */,
+				A20000000000000000000008 /* LiquidRenderer.swift */,
+				A20000000000000000000026 /* FrameTimingProbe.swift */,
+				A20000000000000000000009 /* LiquidShaders.metal */,
+				A20000000000000000000023 /* MobileVolumeOptics.metal */,
+				A20000000000000000000022 /* LiquidVolumeRenderer.swift */,
+				A20000000000000000000021 /* LiquidVolumeField.metal */,
+				A20000000000000000000020 /* LiquidVolumeField.swift */,
+			);
+			path = Rendering;
+			sourceTree = "<group>";
+		};
+		A70000000000000000000006 /* SmallWaveWidget */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000011 /* SmallWaveWidget.swift */,
+				A20000000000000000000012 /* SmallWaveWidgetBundle.swift */,
+				A20000000000000000000016 /* Info.plist */,
+			);
+			path = SmallWaveWidget;
+			sourceTree = "<group>";
+		};
+		A70000000000000000000007 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000015 /* SmallWave.app */,
+				A20000000000000000000014 /* SmallWaveWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A50000000000000000000001 /* SmallWave */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A80000000000000000000001 /* Build configuration list for PBXNativeTarget "SmallWave" */;
+			buildPhases = (
+				A60000000000000000000002 /* Frameworks */,
+				A60000000000000000000004 /* Sources */,
+				A60000000000000000000005 /* Resources */,
+				A60000000000000000000001 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A90000000000000000000001 /* PBXTargetDependency */,
+			);
+			name = SmallWave;
+			productName = SmallWave;
+			productReference = A20000000000000000000015 /* SmallWave.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A50000000000000000000002 /* SmallWaveWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A80000000000000000000002 /* Build configuration list for PBXNativeTarget "SmallWaveWidget" */;
+			buildPhases = (
+				A60000000000000000000003 /* Frameworks */,
+				A60000000000000000000006 /* Sources */,
+				A60000000000000000000007 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SmallWaveWidget;
+			productName = SmallWaveWidget;
+			productReference = A20000000000000000000014 /* SmallWaveWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A40000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					A50000000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					A50000000000000000000002 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A80000000000000000000003 /* Build configuration list for PBXProject "SmallWave" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				ko,
+			);
+			mainGroup = A70000000000000000000001;
+			productRefGroup = A70000000000000000000007 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A50000000000000000000001 /* SmallWave */,
+				A50000000000000000000002 /* SmallWaveWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A60000000000000000000005 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000010 /* Assets.xcassets in Resources */,
+				A10000000000000000000024 /* Miniatures in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A60000000000000000000007 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A60000000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* SmallWaveApp.swift in Sources */,
+				A10000000000000000000002 /* OceanView.swift in Sources */,
+				A10000000000000000000003 /* MotionInput.swift in Sources */,
+				A10000000000000000000025 /* MotionInputHistory.swift in Sources */,
+				A10000000000000000000004 /* SensoryFeedback.swift in Sources */,
+				A10000000000000000000005 /* LiquidSimulation.swift in Sources */,
+				A10000000000000000000006 /* OceanStyle.swift in Sources */,
+				A10000000000000000000007 /* LiquidMetalView.swift in Sources */,
+				A10000000000000000000008 /* LiquidRenderer.swift in Sources */,
+				A10000000000000000000026 /* FrameTimingProbe.swift in Sources */,
+				A10000000000000000000009 /* LiquidShaders.metal in Sources */,
+				A10000000000000000000023 /* MobileVolumeOptics.metal in Sources */,
+				A10000000000000000000022 /* LiquidVolumeRenderer.swift in Sources */,
+				A10000000000000000000021 /* LiquidVolumeField.metal in Sources */,
+				A10000000000000000000020 /* LiquidVolumeField.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A60000000000000000000006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000011 /* SmallWaveWidget.swift in Sources */,
+				A10000000000000000000012 /* SmallWaveWidgetBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A90000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A50000000000000000000002 /* SmallWaveWidget */;
+			targetProxy = A30000000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		AA0000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A20000000000000000000027 /* Signing.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AA0000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A20000000000000000000027 /* Signing.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		AA0000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = "$(SMALLWAVE_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SmallWave/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.smallwave.prototype;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		AA0000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = "$(SMALLWAVE_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SmallWave/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.smallwave.prototype;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		AA0000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = "$(SMALLWAVE_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SmallWaveWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.smallwave.prototype.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		AA0000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = "$(SMALLWAVE_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SmallWaveWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.smallwave.prototype.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A80000000000000000000001 /* Build configuration list for PBXNativeTarget "SmallWave" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0000000000000000000003 /* Debug */,
+				AA0000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A80000000000000000000002 /* Build configuration list for PBXNativeTarget "SmallWaveWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0000000000000000000005 /* Debug */,
+				AA0000000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A80000000000000000000003 /* Build configuration list for PBXProject "SmallWave" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0000000000000000000001 /* Debug */,
+				AA0000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A40000000000000000000001 /* Project object */;
+}

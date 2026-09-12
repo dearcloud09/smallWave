@@ -1,0 +1,28 @@
+import Foundation
+import MetalKit
+import CryptoKit
+
+private struct OceanUniforms { var viewport=SIMD4<Float>(1,2.12,0,0); var boat=SIMD4<Float>.zero; var movement=SIMD4<Float>(0,-1,0,0); var color=SIMD4<Float>(0.006,0.22,0.76,0); var optics=SIMD4<Float>(0,0.18,0.6,48) }
+private enum TraceError: Error { case bad(String) }
+@main struct FastMaterialTrace {
+    static func sha(_ d: Data) -> String { SHA256.hash(data:d).map { String(format:"%02x",$0) }.joined() }
+    static func main() { do { try run() } catch { fputs("FAIL \(error)\n",stderr); exit(1) } }
+    static func run() throws {
+        let root=URL(fileURLWithPath:FileManager.default.currentDirectoryPath), cache=root.appendingPathComponent(".build-cache/fast-material"), frame=cache.appendingPathComponent("000"), out=cache.appendingPathComponent("probe-gpu")
+        try FileManager.default.createDirectory(at:out,withIntermediateDirectories:true)
+        let fieldURL=frame.appendingPathComponent("field.f16"), stateURL=root.appendingPathComponent(".build-cache/material-motion/000/state.json"), appURL=root.appendingPathComponent("SmallWave/Rendering/LiquidShaders.metal"), fastURL=root.appendingPathComponent("Studies/FastMaterial.metal")
+        let harness=try Data(contentsOf:URL(fileURLWithPath:#filePath)), executable=try Data(contentsOf:URL(fileURLWithPath:CommandLine.arguments[0])), field=try Data(contentsOf:fieldURL), stateData=try Data(contentsOf:stateURL), appData=try Data(contentsOf:appURL), fastData=try Data(contentsOf:fastURL)
+        guard field.count==256*544*48*2,let app=String(data:appData,encoding:.utf8),let fast=String(data:fastData,encoding:.utf8),let state=try JSONSerialization.jsonObject(with:stateData) as? [String:Any],let boat=state["boat"] as? [Double],boat.count==4,let energy=state["energy"] as? Double else { throw TraceError.bad("input") }
+        for i in stride(from:0,to:field.count,by:2) { let bits=UInt16(field[i])|UInt16(field[i+1])<<8; guard Float(Float16(bitPattern:bits)).isFinite else { throw TraceError.bad("nonfinite field") } }
+        let source="#define FAST_PROBE 1\n"+app+"\n"+fast; try Data(source.utf8).write(to:out.appendingPathComponent("compiled-source.metal"))
+        var u=OceanUniforms(); u.boat=SIMD4(Float(boat[0]),Float(boat[1]),Float(boat[2]),Float(boat[3])); u.movement.w=Float(energy)
+        guard MemoryLayout<OceanUniforms>.stride==80,let device=MTLCreateSystemDefaultDevice(),let queue=device.makeCommandQueue() else { throw TraceError.bad("Metal") }
+        let library=try device.makeLibrary(source:source,options:nil), pipelineDesc=MTLRenderPipelineDescriptor(); pipelineDesc.vertexFunction=library.makeFunction(name:"screenVertex"); pipelineDesc.fragmentFunction=library.makeFunction(name:"fastToyFragment"); pipelineDesc.colorAttachments[0].pixelFormat = .bgra8Unorm; let pipeline=try device.makeRenderPipelineState(descriptor:pipelineDesc)
+        let vd=MTLTextureDescriptor(); vd.textureType = .type3D; vd.pixelFormat = .r16Float; vd.width=256; vd.height=544; vd.depth=48; vd.storageMode = .shared; vd.usage = .shaderRead; guard let volume=device.makeTexture(descriptor:vd) else { throw TraceError.bad("volume") }; field.withUnsafeBytes { volume.replace(region:MTLRegionMake3D(0,0,0,256,544,48),mipmapLevel:0,slice:0,withBytes:$0.baseAddress!,bytesPerRow:512,bytesPerImage:256*544*2) }
+        let td=MTLTextureDescriptor.texture2DDescriptor(pixelFormat:.bgra8Unorm,width:600,height:1272,mipmapped:false); td.storageMode = .shared; td.usage = [.renderTarget,.shaderRead]; guard let target=device.makeTexture(descriptor:td),let trace=device.makeBuffer(length:4096,options:.storageModeShared),let command=queue.makeCommandBuffer() else { throw TraceError.bad("target/trace") }; memset(trace.contents(),0,4096)
+        let pass=MTLRenderPassDescriptor(); pass.colorAttachments[0].texture=target; pass.colorAttachments[0].loadAction = .clear; pass.colorAttachments[0].storeAction = .store; guard let encoder=command.makeRenderCommandEncoder(descriptor:pass) else { throw TraceError.bad("encoder") }; encoder.setRenderPipelineState(pipeline); encoder.setScissorRect(MTLScissorRect(x:586,y:874,width:1,height:1)); encoder.setFragmentTexture(volume,index:0); encoder.setFragmentBytes(&u,length:80,index:0); encoder.setFragmentBuffer(trace,offset:0,index:1); encoder.drawPrimitives(type:.triangle,vertexStart:0,vertexCount:6); encoder.endEncoding(); command.commit(); command.waitUntilCompleted()
+        let status=command.status; let gpu:Any=command.gpuEndTime>command.gpuStartTime ? command.gpuEndTime-command.gpuStartTime:NSNull(); var rgba=[UInt8](repeating:0,count:4); rgba.withUnsafeMutableBytes { target.getBytes($0.baseAddress!,bytesPerRow:4,from:MTLRegionMake2D(586,874,1,1),mipmapLevel:0) }; let raw=trace.contents().bindMemory(to:SIMD4<Float>.self,capacity:256); let records=(0..<256).map { [raw[$0].x,raw[$0].y,raw[$0].z,raw[$0].w] }
+        let report:[String:Any]=["completedAt":ISO8601DateFormatter().string(from:Date()),"commandStatus":status.rawValue,"gpuSeconds":gpu,"device":device.name,"pixel":[586,874],"bgra":rgba,"traceFloat4":records,"inputs":["fieldSHA256":sha(field),"stateSHA256":sha(stateData),"appShaderSHA256":sha(appData),"fastShaderSHA256":sha(fastData),"compiledSourceSHA256":sha(Data(source.utf8)),"harnessSourceSHA256":sha(harness),"executableSHA256":sha(executable)]]
+        try JSONSerialization.data(withJSONObject:report,options:[.prettyPrinted,.sortedKeys]).write(to:out.appendingPathComponent("rawtrace.json")); guard status == .completed else { throw TraceError.bad("command status \(status.rawValue)") }; if let error=command.error { throw error }; print("PASS trace saved")
+    }
+}

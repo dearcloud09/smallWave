@@ -1,0 +1,152 @@
+{
+  "status": "PASS",
+  "method": "180 shared simulation states, rendered three times with assertions that art rendering does not change solver state",
+  "framesPerColor": 180,
+  "durationSeconds": 6,
+  "frameRate": 30,
+  "poseComparisons": [
+    {
+      "pose": "rest",
+      "color": "yellow",
+      "changedPixelBounds": [
+        331,
+        1048,
+        493,
+        1139
+      ],
+      "pixelSize": [
+        804,
+        1748
+      ]
+    },
+    {
+      "pose": "rest",
+      "color": "red",
+      "changedPixelBounds": [
+        326,
+        1047,
+        497,
+        1139
+      ],
+      "pixelSize": [
+        804,
+        1748
+      ]
+    },
+    {
+      "pose": "tilt",
+      "color": "yellow",
+      "changedPixelBounds": [
+        321,
+        986,
+        469,
+        1151
+      ],
+      "pixelSize": [
+        804,
+        1748
+      ]
+    },
+    {
+      "pose": "tilt",
+      "color": "red",
+      "changedPixelBounds": [
+        321,
+        985,
+        468,
+        1150
+      ],
+      "pixelSize": [
+        804,
+        1748
+      ]
+    },
+    {
+      "pose": "shake",
+      "color": "yellow",
+      "changedPixelBounds": [
+        104,
+        707,
+        626,
+        1270
+      ],
+      "pixelSize": [
+        804,
+        1748
+      ]
+    },
+    {
+      "pose": "shake",
+      "color": "red",
+      "changedPixelBounds": [
+        45,
+        707,
+        555,
+        1262
+      ],
+      "pixelSize": [
+        804,
+        1748
+      ]
+    },
+    {
+      "pose": "inverted",
+      "color": "yellow",
+      "changedPixelBounds": [
+        203,
+        137,
+        347,
+        304
+      ],
+      "pixelSize": [
+        804,
+        1748
+      ]
+    },
+    {
+      "pose": "inverted",
+      "color": "red",
+      "changedPixelBounds": [
+        203,
+        138,
+        346,
+        304
+      ],
+      "pixelSize": [
+        804,
+        1748
+      ]
+    },
+    {
+      "pose": "flat",
+      "color": "yellow",
+      "changedPixelBounds": [
+        237,
+        77,
+        351,
+        224
+      ],
+      "pixelSize": [
+        804,
+        1748
+      ]
+    },
+    {
+      "pose": "flat",
+      "color": "red",
+      "changedPixelBounds": [
+        239,
+        77,
+        351,
+        224
+      ],
+      "pixelSize": [
+        804,
+        1748
+      ]
+    }
+  ],
+  "motionAngleDifferenceMaxDegrees": 40.62596347568855,
+  "assetSHA256": "2c0d8773491df6dd12cffc4386c8ca3f9004700b9fecf2b1cce8d0cfe89604bd",
+  "nativePhysicalSensorTest": "NOT_RUN"
+}

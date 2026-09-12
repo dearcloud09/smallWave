@@ -1,0 +1,19 @@
+{
+  "SmallWave/App/MotionInput.swift": "f2580a595cc13028de922abe422b72f14156842573b42926403ff7618495fd08",
+  "SmallWave/App/MotionInputHistory.swift": "be661f7e6f9bfcc17e4c05003409fad77fda79f2c573870bb4ace67b4e019de4",
+  "SmallWave/App/OceanView.swift": "fe4d91e39e463a0ed04565e5421211407987d193d4a41749579dfa30bf9779c3",
+  "SmallWave/App/SensoryFeedback.swift": "104f5567cf923da0f8a266893eb0c0c883cc32e2c055259152009d506d40cfed",
+  "SmallWave/App/SmallWaveApp.swift": "518521ddaacfddd0f56e7493f70b2986e26020566ee959ba3c5b3d084fc907e4",
+  "SmallWave/Core/LiquidSimulation.swift": "1392c3370f794009f860fcf8f4c888fa6e3a0903233da2e95117f5ec629e04d0",
+  "SmallWave/Core/OceanStyle.swift": "5ebb39f969d65c748f9ee1fee4a4947bb726f2ec8abbf41abd602feefcf7b43c",
+  "SmallWave/Rendering/FrameTimingProbe.swift": "a2e4904571c3dac5446d6d98d08fcdd4c5b5f7f1a4fe6e3a37d478c2a7b0295b",
+  "SmallWave/Rendering/LiquidMetalView.swift": "7c4ec9ccb2a203cf9b320f0766083cbaded1f2331edeaebccd15b8f632280536",
+  "SmallWave/Rendering/LiquidRenderer.swift": "afec92196d749600d714d3417ed59fa57a39540e617dbf80591b0b00f2298eb3",
+  "SmallWave/Rendering/LiquidVolumeField.swift": "6702db62368b53696c8f2db6980e98d67af82ac69ab99cba13cece503360e45b",
+  "SmallWave/Rendering/LiquidVolumeRenderer.swift": "721470c4b5ca12c21f1378bb07e6787736d914908ffb12ac80e36c2602338c50",
+  "SmallWave/Rendering/LiquidShaders.metal": "ee18cab7059ee1e120cc54b8f476fa0e646d280258d59f02d166945f9af9fe7d",
+  "SmallWave/Rendering/LiquidVolumeField.metal": "91156972e9cf084940a6d3d62fe1134e081b0ff5ac5efca0a5831b8c8f805bdd",
+  "SmallWave/Rendering/MobileVolumeOptics.metal": "b89747a01bfc1aa8e1c88bc9b2bbc52a5ecddf69f66cdab7b346417483307e07",
+  "SmallWave.xcodeproj/project.pbxproj": "5496ca7dae97906a50571b394f71d9f1cf39b29d888a4360fc6b2744c9fea1c2",
+  "Tests/MiniatureArtReview.swift": "e99523d512c4ba17abaf53644130146c8d25dd3de96787673359d12617e7ea2f"
+}

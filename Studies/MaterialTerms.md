@@ -1,0 +1,9 @@
+# Material terms — frozen offscreen diagnosis
+
+This study does not tune or adopt a material. It clones the current `oceanFragment` and disables one existing statement at a time after first proving the wrapper's baseline bytes exactly match `LiquidRenderer` at one fixed shake state.
+
+The diagnosed current terms are: transmitted scene (`scene*absorption`), `scatteredLight`, submerged-toy compositing, caustic `glint`, Fresnel-weighted studio reflection, meniscus `highlight`, `fineRim`, final `coverage`, and vessel wall/stripe/vignette post terms. “Fresnel” is used only because the current source names its fifth-power reflectance calculation `fresnel`; no extra optical term is introduced.
+
+The script uses the same frozen fixture as PoissonCap: 600 resting steps, 220 tilt steps with gravity `(0.65,-0.76,0)`, then 120 shake steps. Its saved normal-size baseline PNG must decode to exactly the existing PoissonCap shake baseline. It freezes every listed input from before compilation until after the run, writes the original and compiled Metal sources, and hashes all PNG/CSV/text outputs. `metrics.csv` is recomputed from separately decoded saved PNG RGB: an RGB-any changed pixel count, RGB-only MAE, and maximum RGB-channel difference. It is final display evidence that includes coverage, display transfer, clamp, and compositing; total-image MAE is not a white-band cause ranking. `samples.csv` uses fixed particle-graph body/neck/rounded-end points and reads those actual rendered pixels. The source has no semantic region map, so they are data points only and make no neck-causality claim.
+
+Run: `DEVELOPER_DIR=/Library/Developer/CommandLineTools sh scripts/study-material-terms.sh`. Output is `.build-cache/previews/material-terms/run-*/`; it is diagnostic evidence only, not a product image or adoption recommendation.

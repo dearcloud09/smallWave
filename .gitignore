@@ -1,0 +1,33 @@
+.build-cache/
+DerivedData/
+.DS_Store
+xcuserdata/
+*.xcuserstate
+*.ipa
+*.p12
+*.mobileprovision
+
+# Personal signing stays on each developer's machine.
+Config/Signing.local.xcconfig
+
+# Local working journals and original device/reference media.
+/RESTART.md
+/PROGRESS.md
+/DEVELOPMENT_HISTORY.md
+/PLAN.md
+/References/*
+!/References/miniature-art-direction/
+/References/miniature-art-direction/*
+!/References/miniature-art-direction/toy-v2/
+/Studies/*.png
+
+# Local scratch files and platform metadata.
+*.trace/
+*.dSYM/
+*.xcarchive/
+*.cer
+*.p8
+.env
+.env.*
+__pycache__/
+*.pyc

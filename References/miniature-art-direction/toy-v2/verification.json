@@ -1,0 +1,71 @@
+{
+  "device" : "Apple M1",
+  "displaySizePoints" : [
+    402,
+    874
+  ],
+  "hullScale" : 0.75,
+  "physicalIPhoneValidation" : "NOT_RUN; offscreen Mac rendering with synthetic tilt input",
+  "pixelSize" : [
+    804,
+    1748
+  ],
+  "renderer" : "Native LiquidRenderer; live volume optics; unchanged 480px trace cap and edge resolve",
+  "states" : [
+    {
+      "boatAngle" : 0.0039952164515852928,
+      "boatPosition" : [
+        0.05000000074505806,
+        -0.63525712490081787,
+        0
+      ],
+      "immersion" : 0.41649714112281799,
+      "pose" : "rest",
+      "stateSHA256" : "d06a1144239aa0d5b41d615da919b5d3297632900453e3adb7d31c412f4fffca"
+    },
+    {
+      "boatAngle" : 0.8841814398765564,
+      "boatPosition" : [
+        -0.019066354259848595,
+        -0.57343596220016479,
+        0
+      ],
+      "immersion" : 0.28021240234375,
+      "pose" : "tilt",
+      "stateSHA256" : "4469163173807e7aac8183e1e842eec75f5d66430bbe981fd880899807cc3d53"
+    },
+    {
+      "boatAngle" : -0.19964213669300079,
+      "boatPosition" : [
+        -0.37109056115150452,
+        -0.5547785758972168,
+        0.059450875967741013
+      ],
+      "immersion" : 0.63605958223342896,
+      "pose" : "shake",
+      "stateSHA256" : "c5c0f6aa023ce8737987d32b77c28fceb5049ea3a285d8653f75e6a8d04a5d6e"
+    },
+    {
+      "boatAngle" : -3.1805672645568848,
+      "boatPosition" : [
+        -0.31573799252510071,
+        1.486280083656311,
+        0.087151162326335907
+      ],
+      "immersion" : 0.88479763269424438,
+      "pose" : "inverted",
+      "stateSHA256" : "3357d2d8d8fa9aec4ee47eed28e99ef4984ea625cc98c437b145fbbc9b266242"
+    },
+    {
+      "boatAngle" : -2.2225251197814941,
+      "boatPosition" : [
+        -0.31291347742080688,
+        1.7598553895950317,
+        0.031691845506429672
+      ],
+      "immersion" : 0.37953546643257141,
+      "pose" : "flat",
+      "stateSHA256" : "0d200de067d2f608a2e2614ce423ac33ec671456cf57dafe9f4363e346323126"
+    }
+  ]
+}
