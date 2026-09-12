@@ -125,12 +125,13 @@ struct OceanView: View {
             NavigationStack {
                 Form {
                     Section {
-                        Picker("작은 배", selection: $miniatureID) {
+                        Picker("작은 배의 색", selection: $miniatureID) {
                             ForEach(MiniatureStyle.allCases) { style in
                                 Text(style.title).tag(style.rawValue)
                             }
                         }
                         .pickerStyle(.inline)
+                        .labelsHidden()
                     } header: {
                         Text("작은 배의 색")
                     } footer: {
@@ -159,7 +160,7 @@ struct OceanView: View {
                             settings = false
                         }
                     } footer: {
-                        Text("배를 바꿔도 같은 바다의 움직임이 이어져.")
+                        Text("색을 바꿔도 같은 바다의 움직임이 이어져.")
                     }
                 }
                 .navigationTitle("나의 작은 바다")
