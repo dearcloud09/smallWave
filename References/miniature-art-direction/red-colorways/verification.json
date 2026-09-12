@@ -1,0 +1,193 @@
+{
+  "createdUTC": "2026-09-12T23:28:58.704194+00:00",
+  "baselineCommit": "665277eb972751295efb06399073249fa2b6210b",
+  "displaySizePoints": [
+    402,
+    874
+  ],
+  "nativeCapturePixels": [
+    1206,
+    2622
+  ],
+  "nativeCaptureMethod": "Separate iPhone 17 Pro Simulator app; paused once, then paint changed using its review-only picker. Native layout is the unmodified OceanView.",
+  "sharedAppSourcesChangedByThisStudy": false,
+  "paintVariants": {
+    "baselineCommit": "665277eb972751295efb06399073249fa2b6210b",
+    "displaySizePoints": [
+      402,
+      874
+    ],
+    "variants": [
+      {
+        "id": "tomato",
+        "case": "sunday",
+        "title": "Tomato red",
+        "label": "토마토 레드",
+        "hex": "#D44C38",
+        "rgb255": [
+          212,
+          76,
+          56
+        ]
+      },
+      {
+        "id": "coral",
+        "case": "harbour",
+        "title": "Muted coral red",
+        "label": "뮤트 코랄",
+        "hex": "#CD6258",
+        "rgb255": [
+          205,
+          98,
+          88
+        ]
+      },
+      {
+        "id": "sunfaded",
+        "case": "drift",
+        "title": "Slightly sun-faded red",
+        "label": "햇볕에 바랜 레드",
+        "hex": "#D3755E",
+        "rgb255": [
+          211,
+          117,
+          94
+        ]
+      },
+      {
+        "id": "brick",
+        "case": "brick",
+        "title": "Soft brick red",
+        "label": "소프트 브릭",
+        "hex": "#B95243",
+        "rgb255": [
+          185,
+          82,
+          67
+        ]
+      }
+    ],
+    "baselinePaint": {
+      "id": "current",
+      "case": "current",
+      "title": "Current red",
+      "label": "현재 빨강",
+      "hex": "#C23C2B",
+      "shaderRGB": [
+        0.76,
+        0.235,
+        0.17
+      ]
+    }
+  },
+  "previewSourceOnlyChanges": [
+    "Tests/MiniatureArtReview.swift",
+    "SmallWave/Core/OceanStyle.swift",
+    "SmallWave/Rendering/LiquidShaders.metal",
+    "SmallWave.xcodeproj/project.pbxproj"
+  ],
+  "sourceSHA256": {
+    "Tests/MiniatureArtReview.swift": "b700c086caa48043ffc67a4bb15c4d9f9ff32da39e847fa704f5d36d5a795be2",
+    "SmallWave/Core/OceanStyle.swift": "7f8e5d786b9995f149eaab01d61b7425e6757270b2d59a5886b923f7976e621a",
+    "SmallWave/Rendering/LiquidShaders.metal": "0b4b229c9516e12ae054233508beccb3243321e352e10e273346c3003cbcd3ae",
+    "SmallWave.xcodeproj/project.pbxproj": "edea404a5ed305cf29ac20fa25c1a3e3b11675e793213645abbe1b7114c3f3cb"
+  },
+  "nativePixelComparisonsAgainstCurrent": {
+    "tomato": {
+      "changedPixelsExcludingStatusBar": 7997,
+      "boundsPixels": [
+        488,
+        1622,
+        735,
+        1697
+      ],
+      "sha256": "06f9f54bfe111da3f40e47434c7fe2487095511f00a612b5028723fd5c80cfa9"
+    },
+    "coral": {
+      "changedPixelsExcludingStatusBar": 9965,
+      "boundsPixels": [
+        503,
+        1620,
+        736,
+        1706
+      ],
+      "sha256": "689dd96c555646af88031ab92bc234ad6d6ae626a5ecc9ea55cc0db5175df442"
+    },
+    "sunfaded": {
+      "changedPixelsExcludingStatusBar": 10680,
+      "boundsPixels": [
+        488,
+        1619,
+        737,
+        1707
+      ],
+      "sha256": "f6248e5e2c1c19e5c4cc587cfc954c6d68c5fff7f16b11d2783a132b8c676cd3"
+    },
+    "brick": {
+      "changedPixelsExcludingStatusBar": 8013,
+      "boundsPixels": [
+        488,
+        1621,
+        736,
+        1701
+      ],
+      "sha256": "c29d34ed0e3f4e2cc5526dcdd313b4b9fe74520de617e5852b36f3df3874aafa"
+    }
+  },
+  "poseChecks": [
+    {
+      "pose": "rest",
+      "stateSHA256": "d06a1144239aa0d5b41d615da919b5d3297632900453e3adb7d31c412f4fffca",
+      "currentPaintMaxChannelDifferenceFromApprovedRed": 0,
+      "currentPaintPixelsDifferingByMoreThan2": 0,
+      "differenceBoundsPixels": null,
+      "proceduralPNGsByteIdentical": true
+    },
+    {
+      "pose": "tilt",
+      "stateSHA256": "4469163173807e7aac8183e1e842eec75f5d66430bbe981fd880899807cc3d53",
+      "currentPaintMaxChannelDifferenceFromApprovedRed": 0,
+      "currentPaintPixelsDifferingByMoreThan2": 0,
+      "differenceBoundsPixels": null,
+      "proceduralPNGsByteIdentical": true
+    },
+    {
+      "pose": "shake",
+      "stateSHA256": "c5c0f6aa023ce8737987d32b77c28fceb5049ea3a285d8653f75e6a8d04a5d6e",
+      "currentPaintMaxChannelDifferenceFromApprovedRed": 1,
+      "currentPaintPixelsDifferingByMoreThan2": 0,
+      "differenceBoundsPixels": null,
+      "proceduralPNGsByteIdentical": true
+    },
+    {
+      "pose": "inverted",
+      "stateSHA256": "3357d2d8d8fa9aec4ee47eed28e99ef4984ea625cc98c437b145fbbc9b266242",
+      "currentPaintMaxChannelDifferenceFromApprovedRed": 47,
+      "currentPaintPixelsDifferingByMoreThan2": 29,
+      "differenceBoundsPixels": [
+        278,
+        142,
+        289,
+        304
+      ],
+      "proceduralPNGsByteIdentical": true
+    },
+    {
+      "pose": "flat",
+      "stateSHA256": "0d200de067d2f608a2e2614ce423ac33ec671456cf57dafe9f4363e346323126",
+      "currentPaintMaxChannelDifferenceFromApprovedRed": 1,
+      "currentPaintPixelsDifferingByMoreThan2": 0,
+      "differenceBoundsPixels": null,
+      "proceduralPNGsByteIdentical": true
+    }
+  ],
+  "sameStateRenderChecks": 30,
+  "nativeBuild": "PASS",
+  "physicalIPhoneInstall": "NOT_RUN; color study only. Production selection and installed app are unchanged.",
+  "limits": [
+    "Status bar times differ between native captures.",
+    "The palette-lookup shader differs from the previous approved shader at 29 inverted-pose contour pixels by more than 2/255 (maximum 47/255); cause not isolated. Rest and tilt match exactly; shake and flat differ by at most 1/255. The procedural water comparison and simulation state match in every pose.",
+    "Hex colors are shader paint inputs, not final lit on-screen pixels.",
+    "Existing 2D miniature, water transport, submersion and inertia are unchanged."
+  ]
+}

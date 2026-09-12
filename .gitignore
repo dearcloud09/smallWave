@@ -20,6 +20,7 @@ Config/Signing.local.xcconfig
 /References/miniature-art-direction/*
 !/References/miniature-art-direction/toy-v2/
 !/References/miniature-art-direction/toy-v3/
+!/References/miniature-art-direction/red-colorways/
 /References/miniature-art-direction/toy-v3/render-check.log
 /Studies/*.png
 
