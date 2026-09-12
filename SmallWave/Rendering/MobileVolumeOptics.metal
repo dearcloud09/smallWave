@@ -13,7 +13,7 @@ float3 displayToLight(float3 color);
 float3 lightToDisplay(float3 light);
 float4 miniature(float2 world,constant OceanUniforms &u);
 float4 craftedMiniature(float2 world,constant OceanUniforms &u,texture2d<float> art);
-float miniatureContact(float2 world,constant OceanUniforms &u);
+float2 miniatureContact(float2 world,constant OceanUniforms &u);
 #endif
 float liveDensity(texture3d<float> field,float3 p) {
     // Hardware trilinear reconstruction of the live samples. The geometric
@@ -302,12 +302,24 @@ fragment LiveToyOutput liveToyFragment(QuadOut in [[stage_in]],
         if(toyT>1e-5&&toyT<hitDistance) {
             float2 toyPoint=(p+d*toyT).xy;
             float4 toy=craftedMiniature(toyPoint,u,miniatureTexture);
+            if(u.miniatureArt.x>=0 && medium==liveAirBlue) {
+                // Veil only hull samples actually seen through blue liquid.
+                // Refraction can sample above the local waterline, so cover
+                // the wet hull rather than only the sprite's bottom few rows.
+                // Rays, liquid transport and the dry silhouette are unchanged.
+                float hullY=rotate2(toyPoint-u.boat.xy,-u.boat.z).y*(.75/u.miniatureArt.y);
+                float submergedHull=1.0-smoothstep(.080,.115,hullY);
+                // This is an edge-on waterline cue. As the phone lies flat,
+                // retain opaque wood instead of making the whole hull translucent.
+                float surfaceView=smoothstep(.45,.85,length(u.movement.xy));
+                toy*=1.0-.62*submergedHull*surfaceView;
+            }
             if(u.miniatureArt.x>=0 && toy.a<.98 && medium==liveAirBlue) {
                 float3 contactPoint=p+d*toyT;
                 float nearSurface=1-smoothstep(.04,.15,abs(liveDensity(field,contactPoint)));
-                float contact=miniatureContact(toyPoint,u)*nearSurface*(1-toy.a);
-                toy.rgb+=float3(.19,.32,.31)*contact;
-                toy.a+=contact;
+                float2 contact=miniatureContact(toyPoint,u)*nearSurface*(1-toy.a);
+                toy.rgb+=float3(.045,.13,.16)*contact.x+float3(.62,.80,.76)*contact.y;
+                toy.a+=contact.x+contact.y;
             }
             float3 attenuation=medium==liveAirBlue ? exp(-coeff*toyT) : float3(1);
             radiance+=weight*attenuation*displayToLight(toy.rgb/max(toy.a,1e-5))*toy.a;

@@ -1,0 +1,171 @@
+{
+  "createdUTC": "2026-09-12T22:56:10.931190+00:00",
+  "baselineCommit": "7ecceaa45b8a241d23b33130063b3d9a61bfe5e3",
+  "appSourceChanges": [
+    "SmallWave/Rendering/MobileVolumeOptics.metal",
+    "SmallWave/Rendering/LiquidShaders.metal"
+  ],
+  "testCorrection": "Pass the pose MotionSample to the renderer for still captures; identical harness for baseline and candidate. No solver changes.",
+  "artSourceSHA256": {
+    "SmallWave/Rendering/LiquidShaders.metal": "cf105dbe278c8a2b7361eada73bcf8d3e41cb179fbdd545c275241a5720337a0",
+    "SmallWave/Rendering/MobileVolumeOptics.metal": "3b08d71911876f143f0675730fbc8470974bd86d71e7fa2161a506fe700c26ce"
+  },
+  "testSourceSHA256": "0305bbe3d890c9eb77e65bc6354af3cd5258aedfdbbcfda56754e0c8e8b8fc59",
+  "unchangedSourceFiles": 87,
+  "textureSHA256": "2c0d8773491df6dd12cffc4386c8ca3f9004700b9fecf2b1cce8d0cfe89604bd",
+  "simulationStatesBeforeAfterEqual": true,
+  "poses": [
+    {
+      "boatAngle": 0.003995216451585293,
+      "boatPosition": [
+        0.05000000074505806,
+        -0.6352571249008179,
+        0
+      ],
+      "immersion": 0.416497141122818,
+      "pose": "rest",
+      "renderGravity": [
+        0,
+        -1,
+        0
+      ],
+      "stateSHA256": "d06a1144239aa0d5b41d615da919b5d3297632900453e3adb7d31c412f4fffca"
+    },
+    {
+      "boatAngle": 0.8841814398765564,
+      "boatPosition": [
+        -0.019066354259848595,
+        -0.5734359622001648,
+        0
+      ],
+      "immersion": 0.28021240234375,
+      "pose": "tilt",
+      "renderGravity": [
+        0.6499674916267395,
+        -0.7599620223045349,
+        0
+      ],
+      "stateSHA256": "4469163173807e7aac8183e1e842eec75f5d66430bbe981fd880899807cc3d53"
+    },
+    {
+      "boatAngle": -0.1996421366930008,
+      "boatPosition": [
+        -0.3710905611515045,
+        -0.5547785758972168,
+        0.05945087596774101
+      ],
+      "immersion": 0.636059582233429,
+      "pose": "shake",
+      "renderGravity": [
+        0,
+        -1,
+        0
+      ],
+      "stateSHA256": "c5c0f6aa023ce8737987d32b77c28fceb5049ea3a285d8653f75e6a8d04a5d6e"
+    },
+    {
+      "boatAngle": -3.1805672645568848,
+      "boatPosition": [
+        -0.3157379925251007,
+        1.486280083656311,
+        0.08715116232633591
+      ],
+      "immersion": 0.8847976326942444,
+      "pose": "inverted",
+      "renderGravity": [
+        0,
+        1,
+        0
+      ],
+      "stateSHA256": "3357d2d8d8fa9aec4ee47eed28e99ef4984ea625cc98c437b145fbbc9b266242"
+    },
+    {
+      "boatAngle": -2.222525119781494,
+      "boatPosition": [
+        -0.3129134774208069,
+        1.7598553895950317,
+        0.03169184550642967
+      ],
+      "immersion": 0.3795354664325714,
+      "pose": "flat",
+      "renderGravity": [
+        0,
+        0,
+        -1
+      ],
+      "stateSHA256": "0d200de067d2f608a2e2614ce423ac33ec671456cf57dafe9f4363e346323126"
+    }
+  ],
+  "pixelComparisons": [
+    {
+      "pose": "rest",
+      "proceduralPixelsByteIdentical": true,
+      "redChangedPixelsOver2of255": 5002,
+      "redChangedPixelPercent": 0.3559,
+      "boundsPixels": [
+        346,
+        986,
+        490,
+        1138
+      ]
+    },
+    {
+      "pose": "tilt",
+      "proceduralPixelsByteIdentical": true,
+      "redChangedPixelsOver2of255": 4363,
+      "redChangedPixelPercent": 0.3104,
+      "boundsPixels": [
+        291,
+        1008,
+        448,
+        1213
+      ]
+    },
+    {
+      "pose": "shake",
+      "proceduralPixelsByteIdentical": true,
+      "redChangedPixelsOver2of255": 6757,
+      "redChangedPixelPercent": 0.4808,
+      "boundsPixels": [
+        47,
+        641,
+        703,
+        1267
+      ]
+    },
+    {
+      "pose": "inverted",
+      "proceduralPixelsByteIdentical": true,
+      "redChangedPixelsOver2of255": 8361,
+      "redChangedPixelPercent": 0.5949,
+      "boundsPixels": [
+        204,
+        139,
+        404,
+        391
+      ]
+    },
+    {
+      "pose": "flat",
+      "proceduralPixelsByteIdentical": true,
+      "redChangedPixelsOver2of255": 5813,
+      "redChangedPixelPercent": 0.4136,
+      "boundsPixels": [
+        189,
+        64,
+        451,
+        287
+      ]
+    }
+  ],
+  "motionFrames": 180,
+  "motionVariantStateChecks": 540,
+  "nativeSimulatorBuild": "PASS",
+  "nativeCapture": "primary-native.png; iPhone 17 Pro simulator, 1206×2622 pixels / 402×874 points; source includes final surface-view guard",
+  "physicalIPhoneValidation": "NOT_RUN for this art iteration; shared build/device installation coordinated by the other project task",
+  "limits": [
+    "Boat remains a 2D textured miniature in the existing volume renderer.",
+    "Wet-hull coverage is an authored compositing cue; liquid transport, simulation and inertia are unchanged.",
+    "Native before/after captures are from different times; use paired pose renders for identical-state comparisons."
+  ]
+}

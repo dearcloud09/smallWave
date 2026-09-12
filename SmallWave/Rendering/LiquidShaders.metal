@@ -252,7 +252,9 @@ float4 craftedMiniature(float2 world, constant OceanUniforms &u,
     if(any(uv<0.0)||any(uv>1.0)) return float4(0);
     constexpr sampler artSampler(coord::normalized,address::clamp_to_zero,
         filter::linear,mip_filter::linear);
-    float4 texel=art.sample(artSampler,uv);
+    // A mild local mip bias keeps the rim, rope and cloth hem legible after
+    // the existing mobile resolve, without sharpening the liquid or the alpha.
+    float4 texel=art.sample(artSampler,uv,bias(-0.35));
     if(texel.a<0.001) return texel;
     float3 material=texel.rgb/max(texel.a,0.001);
     // Warm cloth needs a little tonal weight at phone size against the clear
@@ -279,16 +281,22 @@ float4 craftedMiniature(float2 world, constant OceanUniforms &u,
     return float4(color*texel.a,texel.a);
 }
 
-// A tiny render-only contact cue. It is gated at the actual blue/clear boundary
-// by the caller; no forces, particles, wave timings or collision geometry change.
-float miniatureContact(float2 world, constant OceanUniforms &u) {
-    if(u.miniatureArt.x<0) return 0;
-    float2 p=rotate2(world-u.boat.xy,-u.boat.z);
+// Render-only shadow and meniscus weights at the actual blue/clear boundary.
+// The caller occludes these with the hull; a wake appears only with existing
+// hull-relative velocity. No forces, particles or collision geometry change.
+float2 miniatureContact(float2 world, constant OceanUniforms &u) {
+    if(u.miniatureArt.x<0) return float2(0);
+    float2 p=rotate2(world-u.boat.xy,-u.boat.z)*(0.75/u.miniatureArt.y);
     float speed=clamp(abs(u.miniatureArt.w),0.0,1.0);
     float side=u.miniatureArt.w<0 ? 1.0 : -1.0;
-    float2 q=p-float2(side*(.15+speed*.012),-.006);
-    float line=exp(-pow(q.y/.009,2.0))*exp(-pow(q.x/(.025+speed*.023),2.0));
-    return line*smoothstep(.03,.3,u.miniatureArt.z)*(.12+.12*speed);
+    float span=1.0-smoothstep(.135,.180,abs(p.x));
+    float shadow=exp(-pow((p.y+.004)/.0055,2.0))*span*.10;
+    float ends=smoothstep(.100,.145,abs(p.x))*(1.0-smoothstep(.164,.186,abs(p.x)));
+    float lip=exp(-pow((p.y-.001)/.0035,2.0))*ends*.13;
+    float2 q=p-float2(side*(.172+speed*.016),-.004);
+    float wake=exp(-pow(q.y/.0045,2.0)-pow(q.x/(.014+speed*.016),2.0))
+               *smoothstep(.025,.30,speed)*.10;
+    return float2(shadow,lip+wake)*smoothstep(.03,.3,u.miniatureArt.z);
 }
 
 float3 backdrop(float2 p, constant OceanUniforms &u) {

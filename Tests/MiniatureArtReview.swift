@@ -68,7 +68,9 @@ import AVFoundation
         let target=device.makeTexture(descriptor:descriptor)!
         let s=renderer.simulation
         var states=[[String:Any]]()
-        func capture(_ name: String) throws {
+        func capture(_ name: String, motion: MotionSample = MotionSample()) throws {
+            // The volume and art shaders must see the same pose used by the solver.
+            renderer.motion=motion
             let hash=stateHash(s)
             for variant in -1...2 {
                 renderer.usesCraftedMiniature=variant>=0
@@ -79,22 +81,23 @@ import AVFoundation
                 try png(pixels(target),width:width,height:height,name:"\(label)-\(name)")
             }
             states.append(["pose":name,"stateSHA256":hash,"boatPosition":[s.boat.position.x,s.boat.position.y,s.boat.position.z],
-                           "boatAngle":s.boat.angle,"immersion":s.boat.immersion])
+                           "boatAngle":s.boat.angle,"immersion":s.boat.immersion,
+                           "renderGravity":[motion.safeGravity.x,motion.safeGravity.y,motion.safeGravity.z]])
             print("PASS \(name): baseline and three variants share the same simulation state")
         }
         for _ in 0..<600 {s.advance(elapsed:1/120,motion:MotionSample())}
         try capture("rest")
         for _ in 0..<220 {s.advance(elapsed:1/120,motion:MotionSample(gravity:SIMD3(0.65,-0.76,0)))}
-        try capture("tilt")
+        try capture("tilt",motion:MotionSample(gravity:SIMD3(0.65,-0.76,0)))
         for i in 0..<120 {
             let t=Float(i)/120
             s.advance(elapsed:1/120,motion:MotionSample(gravity:SIMD3(0,-1,0),acceleration:SIMD3(sin(t*24)*2.5,cos(t*17)*1.5,sin(t*13)*0.8)))
         }
         try capture("shake")
         for _ in 0..<240 {s.advance(elapsed:1/120,motion:MotionSample(gravity:SIMD3(0,1,0)))}
-        try capture("inverted")
+        try capture("inverted",motion:MotionSample(gravity:SIMD3(0,1,0)))
         for _ in 0..<240 {s.advance(elapsed:1/120,motion:MotionSample(gravity:SIMD3(0,0,-1)))}
-        try capture("flat")
+        try capture("flat",motion:MotionSample(gravity:SIMD3(0,0,-1)))
         if !CommandLine.arguments.contains("--stills-only") {
             s.reset()
             for _ in 0..<600 {s.advance(elapsed:1/120,motion:MotionSample())}
