@@ -61,8 +61,11 @@ struct LiquidMetalView: UIViewControllerRepresentable {
         controls.sensory.configure(soundEnabled: sound, hapticsEnabled: haptics && !reducedMotion, rendererActive: active)
         renderer?.motionProvider = { [weak motion] plan, timestamp in
             var samples = motion?.samples(for: plan, at: timestamp) ?? Array(repeating: MotionSample(), count: plan.count)
-            if reducedMotion {
-                for index in samples.indices { samples[index].acceleration *= 0.2 }
+            for index in samples.indices {
+                samples[index].acceleration = MotionSample.mappedAcceleration(
+                    samples[index].acceleration,
+                    reducedMotion: reducedMotion
+                )
             }
             return samples
         }

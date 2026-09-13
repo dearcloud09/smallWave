@@ -30,6 +30,23 @@ struct MotionSample {
         }
         return acceleration / max(1, simd_length(acceleration) / Self.maximumAccelerationG)
     }
+
+    /// Keeps quiet hand motion exact while making deliberate shakes reach up to
+    /// three times the input before the existing 12 g solver safety cap.
+    static func responsiveAcceleration(_ value: SIMD3<Float>) -> SIMD3<Float> {
+        guard value.x.isFinite, value.y.isFinite, value.z.isFinite else { return .zero }
+        let magnitude = simd_length(value)
+        guard magnitude.isFinite else { return .zero }
+        let t = min(1, max(0, (magnitude - 0.15) / 0.5))
+        let smooth = t * t * (3 - 2 * t)
+        return value * (1 + 2 * smooth)
+    }
+
+    /// Maps a measured sample without changing its direction or temporal order.
+    /// Reduced motion deliberately retains its previous fixed 0.2 multiplier.
+    static func mappedAcceleration(_ value: SIMD3<Float>, reducedMotion: Bool) -> SIMD3<Float> {
+        reducedMotion ? value * 0.2 : responsiveAcceleration(value)
+    }
 }
 
 struct LiquidParticle {

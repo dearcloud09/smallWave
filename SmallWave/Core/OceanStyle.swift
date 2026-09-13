@@ -16,7 +16,7 @@ enum OceanMotionResponse: Int, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .system: return "아이폰 설정 따르기"
-        case .direct: return "손 움직임 그대로"
+        case .direct: return "생생하게"
         case .gentle: return "잔잔하게"
         }
     }
@@ -35,8 +35,8 @@ enum OceanMotionResponse: Int, CaseIterable, Identifiable {
         case .system:
             return systemPreference
                 ? "아이폰의 ‘동작 줄이기’가 켜져 있어, 바다도 잔잔하게 반응하고 있어."
-                : "아이폰 설정에 맞춰 손의 움직임을 그대로 받고 있어."
-        case .direct: return "이 바다에서는 빠르게 흔드는 힘까지 그대로 받아."
+                : "아이폰 설정에 맞춰, 강한 흔들림도 생생하게 받아."
+        case .direct: return "작은 움직임은 자연스럽게, 강한 흔들림은 더 또렷하게 받아."
         case .gentle: return "기울어지는 방향은 따라가고, 흔드는 힘은 부드럽게 받아."
         }
     }
