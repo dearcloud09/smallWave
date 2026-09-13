@@ -6,13 +6,22 @@ struct FrameTimingProbeCheck {
         let url = URL(fileURLWithPath: "/private/tmp/frame-timing-probe-check.json")
         try? FileManager.default.removeItem(at: url)
         let probe = FrameTimingProbe(outputURL: url, duration: 0.03, captureID: "probe-check")
+        let motionSnapshot = ["receivedSamples": 42.0, "maximumRawAccelerationG": 4.2,
+                              "samplesAbove3G": 3.0, "maximumRotationRateRadPerSec": 5.1,
+                              "maximumSampleAgeMs": 8.0, "reducedMotion": 0.0]
         let first = probe.record(FrameTimingSample(acceptedAt: 10, interval: nil, simulatedDuration: 0,
-                                                   drawableWait: 0.001, providerCPU: 0.002, simulationCPU: 0.003, encodingCPU: 0.004))
+                                                   drawableWait: 0.001, providerCPU: 0.002, simulationCPU: 0.003, encodingCPU: 0.004),
+                                 motionSnapshot: motionSnapshot)
         let second = probe.record(FrameTimingSample(acceptedAt: 10.02, interval: 0.02, simulatedDuration: 0.016,
-                                                    drawableWait: 0.003, providerCPU: 0.004, simulationCPU: 0.005, encodingCPU: 0.006))
+                                                    drawableWait: 0.003, providerCPU: 0.004, simulationCPU: 0.005, encodingCPU: 0.006),
+                                  motionSnapshot: ["unexpected": 1])
         let excluded = probe.record(FrameTimingSample(acceptedAt: 10.025, interval: 0.3, simulatedDuration: 0.05,
-                                                      drawableWait: 0, providerCPU: 0, simulationCPU: 0, encodingCPU: 0))
-        guard let first, let second, let excluded else { throw Failure("accepted sample missing") }
+                                                      drawableWait: 0, providerCPU: 0, simulationCPU: 0, encodingCPU: 0),
+                                    motionSnapshot: ["maximumRawAccelerationG": -1])
+        let nonfinite = probe.record(FrameTimingSample(acceptedAt: 10.026, interval: 0.01, simulatedDuration: 0.008,
+                                                       drawableWait: 0, providerCPU: 0, simulationCPU: 0, encodingCPU: 0),
+                                     motionSnapshot: ["maximumRawAccelerationG": .nan, "maximumSampleAgeMs": .infinity])
+        guard let first, let second, let excluded, let nonfinite else { throw Failure("accepted sample missing") }
         probe.recordGPU(frameID: first, execution: 0.007, submitToCompletion: 0.009)
         probe.recordGPU(frameID: first, execution: 0.1, submitToCompletion: 0.1) // duplicate ignored
         probe.recordGPU(frameID: 999, execution: 0.1, submitToCompletion: 0.1) // unknown ignored
@@ -24,17 +33,19 @@ struct FrameTimingProbeCheck {
         let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
         try require(json["captureID"] as? String == "probe-check", "capture id missing")
         try require(json["generatedAtUTC"] as? String != nil, "UTC generation time missing")
-        try require(json["acceptedCount"] as? Int == 3, "CPU bound/count failed")
-        try require(json["eligibleIntervalCount"] as? Int == 1, "interval eligibility failed")
+        let savedMotion = json["motionSession"] as? [String: Double]
+        try require(savedMotion == motionSnapshot, "motion snapshot validation or retention failed")
+        try require(json["acceptedCount"] as? Int == 4, "CPU bound/count failed")
+        try require(json["eligibleIntervalCount"] as? Int == 2, "interval eligibility failed")
         try require(json["over250msExcludedCount"] as? Int == 1, "long interval exclusion failed")
         let intervalStats = json["acceptedIntervals"] as! [String: Any]
-        try require(intervalStats["count"] as? Int == 2, "interval p95/max population failed")
+        try require(intervalStats["count"] as? Int == 3, "interval p95/max population failed")
         try require(abs((intervalStats["p95Ms"] as? Double ?? 0) - 300) < 0.0001 &&
                     abs((intervalStats["maxMs"] as? Double ?? 0) - 300) < 0.0001,
                     "interval millisecond percentile values failed")
         try require(abs((json["simulatedToEligibleIntervalRatio"] as? Double ?? 0) - 0.8) < 0.0001, "ratio failed")
         let gpu = json["gpu"] as! [String: Any]
-        try require(gpu["incompleteCount"] as? Int == 1, "GPU grace or duplicate accounting failed")
+        try require(gpu["incompleteCount"] as? Int == 2, "GPU grace or duplicate accounting failed")
         let paired = gpu["nonExecutionLatency"] as! [String: Any]
         try require(paired["count"] as? Int == 2, "paired non-execution latency missing")
         try require(abs((paired["maxMs"] as? Double ?? 0) - 3) < 0.0001 &&
@@ -45,6 +56,7 @@ struct FrameTimingProbeCheck {
         try require(secondWrite == nil, "probe accepted post-cutoff record")
         let bytesBefore = try Data(contentsOf: url)
         probe.recordGPU(frameID: excluded, execution: 0.01, submitToCompletion: 0.02)
+        probe.recordGPU(frameID: nonfinite, execution: 0.01, submitToCompletion: 0.02)
         Thread.sleep(forTimeInterval: 0.05)
         let bytesAfter = try Data(contentsOf: url)
         try require(bytesBefore == bytesAfter, "probe wrote more than once")

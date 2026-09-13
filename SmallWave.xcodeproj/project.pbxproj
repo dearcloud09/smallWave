@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A10000000000000000000026 /* FrameTimingProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000026 /* FrameTimingProbe.swift */; };
+		A10000000000000000000027 /* LiquidSnapshotProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000028 /* LiquidSnapshotProbe.swift */; };
 		A10000000000000000000025 /* MotionInputHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000025 /* MotionInputHistory.swift */; };
 		A10000000000000000000024 /* Miniatures in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000024 /* Miniatures */; };
 		A10000000000000000000001 /* SmallWaveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* SmallWaveApp.swift */; };
@@ -56,6 +57,7 @@
 /* Begin PBXFileReference section */
 		A20000000000000000000027 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/Signing.xcconfig; sourceTree = "<group>"; };
 		A20000000000000000000026 /* FrameTimingProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameTimingProbe.swift; sourceTree = "<group>"; };
+		A20000000000000000000028 /* LiquidSnapshotProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidSnapshotProbe.swift; sourceTree = "<group>"; };
 		A20000000000000000000025 /* MotionInputHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionInputHistory.swift; sourceTree = "<group>"; };
 		A20000000000000000000024 /* Miniatures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Miniatures; sourceTree = "<group>"; };
 		A20000000000000000000001 /* SmallWaveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWaveApp.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				A20000000000000000000007 /* LiquidMetalView.swift */,
 				A20000000000000000000008 /* LiquidRenderer.swift */,
 				A20000000000000000000026 /* FrameTimingProbe.swift */,
+				A20000000000000000000028 /* LiquidSnapshotProbe.swift */,
 				A20000000000000000000009 /* LiquidShaders.metal */,
 				A20000000000000000000023 /* MobileVolumeOptics.metal */,
 				A20000000000000000000022 /* LiquidVolumeRenderer.swift */,
@@ -287,6 +290,7 @@
 				A10000000000000000000007 /* LiquidMetalView.swift in Sources */,
 				A10000000000000000000008 /* LiquidRenderer.swift in Sources */,
 				A10000000000000000000026 /* FrameTimingProbe.swift in Sources */,
+				A10000000000000000000027 /* LiquidSnapshotProbe.swift in Sources */,
 				A10000000000000000000009 /* LiquidShaders.metal in Sources */,
 				A10000000000000000000023 /* MobileVolumeOptics.metal in Sources */,
 				A10000000000000000000022 /* LiquidVolumeRenderer.swift in Sources */,
@@ -358,7 +362,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = "$(SMALLWAVE_DEVELOPMENT_TEAM)";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SmallWave/Info.plist;
@@ -379,7 +383,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = "$(SMALLWAVE_DEVELOPMENT_TEAM)";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SmallWave/Info.plist;
@@ -399,7 +403,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = "$(SMALLWAVE_DEVELOPMENT_TEAM)";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SmallWaveWidget/Info.plist;
@@ -418,7 +422,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = "$(SMALLWAVE_DEVELOPMENT_TEAM)";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SmallWaveWidget/Info.plist;

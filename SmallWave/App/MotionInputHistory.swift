@@ -6,6 +6,10 @@ struct MotionInputHistory {
     struct Diagnostics: Equatable {
         var receivedSamples = 0
         var lastSampleTimestamp: TimeInterval?
+        var maximumRawAccelerationG: Float = 0
+        var samplesAbove3G = 0
+        var maximumRotationRateRadPerSec: Float = 0
+        var maximumSampleAgeMs: Double = 0
     }
 
     private struct Reading {
@@ -43,7 +47,7 @@ struct MotionInputHistory {
     }
 
     mutating func append(gravity: SIMD3<Float>, acceleration: SIMD3<Float>, timestamp: TimeInterval,
-                         receivedAt receiptTimestamp: TimeInterval) {
+                         receivedAt receiptTimestamp: TimeInterval, rotationRate: SIMD3<Float> = .zero) {
         guard timestamp.isFinite, receiptTimestamp.isFinite,
               timestamp <= receiptTimestamp + 0.05,
               isFinite(gravity), isFinite(acceleration) else { return }
@@ -51,8 +55,18 @@ struct MotionInputHistory {
         readings.append(Reading(timestamp: timestamp, gravity: gravity,
                                 acceleration: MotionSample(acceleration: acceleration).safeAcceleration))
         if readings.count > Self.maximumReadings { readings.removeFirst(readings.count - Self.maximumReadings) }
-        diagnostics.receivedSamples += 1
+        if diagnostics.receivedSamples < Int.max { diagnostics.receivedSamples += 1 }
         diagnostics.lastSampleTimestamp = timestamp
+        let accelerationMagnitude = finiteMagnitude(acceleration)
+        diagnostics.maximumRawAccelerationG = max(diagnostics.maximumRawAccelerationG,
+                                                  saturatedFloat(accelerationMagnitude))
+        if accelerationMagnitude > 3, diagnostics.samplesAbove3G < Int.max { diagnostics.samplesAbove3G += 1 }
+        if isFinite(rotationRate) {
+            diagnostics.maximumRotationRateRadPerSec = max(diagnostics.maximumRotationRateRadPerSec,
+                                                            saturatedFloat(finiteMagnitude(rotationRate)))
+        }
+        diagnostics.maximumSampleAgeMs = max(diagnostics.maximumSampleAgeMs,
+                                             saturatedMilliseconds(receiptTimestamp - timestamp))
     }
 
     mutating func samples(for plan: LiquidStepPlan, at timestamp: TimeInterval) -> [MotionSample] {
@@ -125,5 +139,24 @@ struct MotionInputHistory {
 
     private func isFinite(_ value: SIMD3<Float>) -> Bool {
         value.x.isFinite && value.y.isFinite && value.z.isFinite
+    }
+
+    /// Float components can be finite while their Float norm overflows. Diagnostics
+    /// use Double only for aggregation; sampled physical input stays unchanged.
+    private func finiteMagnitude(_ value: SIMD3<Float>) -> Double {
+        let x = Double(value.x), y = Double(value.y), z = Double(value.z)
+        return (x * x + y * y + z * z).squareRoot()
+    }
+
+    private func saturatedFloat(_ value: Double) -> Float {
+        guard value.isFinite else { return .greatestFiniteMagnitude }
+        return value >= Double(Float.greatestFiniteMagnitude) ? .greatestFiniteMagnitude : Float(value)
+    }
+
+    private func saturatedMilliseconds(_ seconds: TimeInterval) -> Double {
+        guard seconds.isFinite else { return .greatestFiniteMagnitude }
+        guard seconds > 0 else { return 0 }
+        let milliseconds = seconds * 1_000
+        return milliseconds.isFinite ? milliseconds : .greatestFiniteMagnitude
     }
 }

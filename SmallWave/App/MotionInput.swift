@@ -29,6 +29,19 @@ final class MotionInput: ObservableObject {
         return history.diagnostics
     }
 
+    var timingDiagnostics: [String: Double] {
+        historyLock.lock()
+        defer { historyLock.unlock() }
+        let diagnostics = history.diagnostics
+        return [
+            "receivedSamples": Double(diagnostics.receivedSamples),
+            "maximumRawAccelerationG": Double(diagnostics.maximumRawAccelerationG),
+            "samplesAbove3G": Double(diagnostics.samplesAbove3G),
+            "maximumRotationRateRadPerSec": Double(diagnostics.maximumRotationRateRadPerSec),
+            "maximumSampleAgeMs": diagnostics.maximumSampleAgeMs
+        ]
+    }
+
     func start() {
         guard !manager.isDeviceMotionActive else { return }
         guard manager.isDeviceMotionAvailable else { unavailable = true; return }
@@ -67,13 +80,14 @@ final class MotionInput: ObservableObject {
         let gravity = SIMD3(Float(motion.gravity.x), Float(motion.gravity.y), Float(motion.gravity.z))
         let acceleration = SIMD3(Float(motion.userAcceleration.x), Float(motion.userAcceleration.y),
                                  Float(motion.userAcceleration.z))
+        let rotationRate = SIMD3(Float(motion.rotationRate.x), Float(motion.rotationRate.y), Float(motion.rotationRate.z))
         historyLock.lock()
         guard generation == updateGeneration else {
             historyLock.unlock()
             return
         }
         history.append(gravity: gravity, acceleration: acceleration, timestamp: motion.timestamp,
-                       receivedAt: ProcessInfo.processInfo.systemUptime)
+                       receivedAt: ProcessInfo.processInfo.systemUptime, rotationRate: rotationRate)
         historyLock.unlock()
     }
 }

@@ -10,6 +10,9 @@ struct LiquidStepPlan {
 }
 
 struct MotionSample {
+    // Preserve vigorous arm motion before temporal resampling. Forces and the
+    // solver's velocity/position limits remain unchanged; quiet input is exact.
+    static let maximumAccelerationG: Float = 12
     var gravity = SIMD3<Float>(0, -1, 0)
     var acceleration = SIMD3<Float>.zero
 
@@ -25,7 +28,7 @@ struct MotionSample {
         guard acceleration.x.isFinite, acceleration.y.isFinite, acceleration.z.isFinite else {
             return .zero
         }
-        return acceleration / max(1, simd_length(acceleration) / 3)
+        return acceleration / max(1, simd_length(acceleration) / Self.maximumAccelerationG)
     }
 }
 
@@ -72,6 +75,9 @@ final class LiquidSimulation {
     private(set) var steps = 0
     private(set) var maximumCohesionDisplacement: Float = 0
     private(set) var cohesionClampCount = 0
+
+    /// Last solver-neighbour candidates, exposed read-only for reconstruction guards.
+    var restingNeighbourCandidates: [[Int]] { neighbours }
 
     private var accumulator: Float = 0
     private var lambda: [Float] = []

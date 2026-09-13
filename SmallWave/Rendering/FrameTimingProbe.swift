@@ -29,6 +29,7 @@ final class FrameTimingProbe {
     private var samples: [FrameTimingSample] = []
     private var gpu: [Int: GPUResult] = [:]
     private var nextFrameID = 0
+    private var motionSession: [String: Double]?
     private var cpuClosed = false
     private var finalized = false
     private var closeScheduled = false
@@ -41,7 +42,7 @@ final class FrameTimingProbe {
     }
 
     /// Returns an id only for an accepted CPU sample. Call `recordGPU` asynchronously.
-    func record(_ sample: FrameTimingSample) -> Int? {
+    func record(_ sample: FrameTimingSample, motionSnapshot: [String: Double]? = nil) -> Int? {
         guard sample.acceptedAt.isFinite else { return nil }
         lock.lock()
         defer { lock.unlock() }
@@ -59,6 +60,7 @@ final class FrameTimingProbe {
         let frameID = nextFrameID
         nextFrameID += 1
         samples.append(sample)
+        if let validSnapshot = validatedMotionSnapshot(motionSnapshot) { motionSession = validSnapshot }
         return frameID
     }
 
@@ -134,6 +136,7 @@ final class FrameTimingProbe {
             captureID: captureID,
             generatedAtUTC: ISO8601DateFormatter().string(from: Date()),
             appBuild: Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String,
+            motionSession: motionSession,
             acceptedCount: samples.count,
             spanSeconds: span,
             acceptedHz: span > 0 ? Double(samples.count - 1) / span : nil,
@@ -158,10 +161,21 @@ final class FrameTimingProbe {
         return Stats(count: values.count, medianMs: percentile(0.5), p95Ms: percentile(0.95), maxMs: values.last)
     }
 
+    private func validatedMotionSnapshot(_ snapshot: [String: Double]?) -> [String: Double]? {
+        guard let snapshot else { return nil }
+        let allowed = Set(["receivedSamples", "maximumRawAccelerationG", "samplesAbove3G",
+                           "maximumRotationRateRadPerSec", "maximumSampleAgeMs", "reducedMotion"])
+        guard !snapshot.isEmpty, Set(snapshot.keys).isSubset(of: allowed),
+              snapshot.values.allSatisfy({ $0.isFinite && $0 >= 0 }) else { return nil }
+        if let reducedMotion = snapshot["reducedMotion"], reducedMotion != 0 && reducedMotion != 1 { return nil }
+        return snapshot
+    }
+
     private struct Report: Codable {
         var captureID: String
         var generatedAtUTC: String
         var appBuild: String?
+        var motionSession: [String: Double]?
         var acceptedCount: Int
         var spanSeconds: TimeInterval
         var acceptedHz: Double?

@@ -108,6 +108,10 @@ final class LiquidRenderer: NSObject, MTKViewDelegate {
     var onEnergy: ((Float) -> Void)?
     var onError: ((String) -> Void)?
     var motionProvider: ((LiquidStepPlan, TimeInterval) -> [MotionSample])?
+    private var surfaceRestState = LiquidSurfaceRestState()
+    #if os(iOS)
+    var motionDiagnosticsProvider: (() -> [String: Double])?
+    #endif
 
     private let device: MTLDevice
     private let queue: MTLCommandQueue
@@ -147,6 +151,15 @@ final class LiquidRenderer: NSObject, MTKViewDelegate {
               let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else { return nil }
         return FrameTimingProbe(outputURL: caches.appendingPathComponent("smallwave-frame-timing.json"),
                                 captureID: captureID)
+    }()
+    // Developer-only wall reproduction capture. Normal launches never instantiate it.
+    private let wallCaptureID = LiquidSnapshotProbe.captureID(from: ProcessInfo.processInfo.arguments)
+    private lazy var wallSnapshotProbe: LiquidSnapshotProbe? = {
+        guard let captureID = wallCaptureID,
+              let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else { return nil }
+        return LiquidSnapshotProbe(captureID: captureID,
+                                  outputURL: caches.appendingPathComponent(LiquidSnapshotProbe.outputFilename),
+                                  appBuild: Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String)
     }()
     #endif
 
@@ -215,7 +228,7 @@ final class LiquidRenderer: NSObject, MTKViewDelegate {
         }
     }
 
-    func reset() { simulation.reset(); lastFrameTime = nil }
+    func reset() { simulation.reset(); lastFrameTime = nil; surfaceRestState.reset() }
 
     /// Explicit directory keeps command-line studies independent of app resources.
     /// Premultiply before filtering and mip generation so transparent texel colors
@@ -418,9 +431,36 @@ final class LiquidRenderer: NSObject, MTKViewDelegate {
                 volumeOptics?.appliesEdgeAntialiasing = true
             }
             guard let volumeOptics else {throw OceanRendererError.unavailable("새 액체 재질을 읽지 못했어.")}
+            if isActive {
+                let peak = stepMotions.reduce(simd_length(motion.safeAcceleration)) {
+                    max($0, simd_length($1.safeAcceleration))
+                }
+                let coherent = peak < 0.06 && simulation.energy < 0.13
+                    && LiquidSurfaceRestState.isCoherentBulk(particles: simulation.particles,
+                                                            connectionRadius: simulation.smoothingRadius,
+                                                            neighbourCandidates: simulation.restingNeighbourCandidates)
+                surfaceRestState.update(elapsed: elapsed, gravity: motion.safeGravity,
+                                        maximumAcceleration: peak, energy: simulation.energy,
+                                        coherentBulk: coherent)
+            }
+            volumeOptics.surfaceFilter = surfaceRestState.parameters
             volumeOptics.miniatureTexture = miniatureTexture
             uniforms.color=SIMD4(0.0001,0.16,0.45,0)
             uniforms.optics=SIMD4(1.46,1.333,0.3,0)
+            #if os(iOS)
+            if wallCaptureID != nil, isActive, let timestamp = motionTimestamp {
+                wallSnapshotProbe?.record(now: timestamp, simulation: simulation, motion: motion,
+                                          screenRotation: screenRotation, surfaceFilter: volumeOptics.surfaceFilter,
+                                          renderState: LiquidSnapshotProbe.RenderState(
+                                            viewport: [uniforms.viewport.x, uniforms.viewport.y, uniforms.viewport.z, uniforms.viewport.w],
+                                            movement: [uniforms.movement.x, uniforms.movement.y, uniforms.movement.z, uniforms.movement.w],
+                                            color: [uniforms.color.x, uniforms.color.y, uniforms.color.z, uniforms.color.w],
+                                            optics: [uniforms.optics.x, uniforms.optics.y, uniforms.optics.z, uniforms.optics.w],
+                                            miniatureArt: [uniforms.miniatureArt.x, uniforms.miniatureArt.y, uniforms.miniatureArt.z, uniforms.miniatureArt.w],
+                                            boat: [uniforms.boat.x, uniforms.boat.y, uniforms.boat.z, uniforms.boat.w],
+                                            targetPixelWidth: target.width, targetPixelHeight: target.height))
+            }
+            #endif
             try volumeOptics.encodeDisplay(command:command,target:target,
                 particles:particleBuffer,particleCount:simulation.particles.count,
                 bubbles:bubbleBuffer,bubbleCount:showsBubbles ? simulation.bubbles.count : 0,uniforms:uniforms)
@@ -552,7 +592,8 @@ final class LiquidRenderer: NSObject, MTKViewDelegate {
         guard let probe = frameTimingProbe,
               let frameID = probe.record(FrameTimingSample(acceptedAt: timestamp, interval: interval,
                   simulatedDuration: simulatedDuration, drawableWait: drawableWait,
-                  providerCPU: providerCPU, simulationCPU: simulationCPU, encodingCPU: encodingCPU)) else { return }
+                  providerCPU: providerCPU, simulationCPU: simulationCPU, encodingCPU: encodingCPU),
+                  motionSnapshot: motionDiagnosticsProvider?()) else { return }
         let submitted = CACurrentMediaTime()
         command.addCompletedHandler { completed in
             let execution = completed.gpuEndTime > completed.gpuStartTime && completed.gpuStartTime > 0

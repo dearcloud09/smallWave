@@ -67,6 +67,7 @@ final class LiquidSimulation {
     let fixedStep: Float = 1 / 120
     let cohesionStrength: Float
     let diagnosticForceScale: Float
+    let diagnosticAccelerationCap: Float
     private(set) var predictionCaps = 0
     private(set) var constraintCaps = 0
     let interfaceBubbles: Bool
@@ -101,8 +102,10 @@ final class LiquidSimulation {
 
     init(cohesionStrength: Float = LiquidSimulation.defaultCohesionStrength,
          interfaceBubbles: Bool = LiquidSimulation.defaultInterfaceBubbles,
-         diagnosticForceScale: Float = LiquidSimulation.diagnosticDefaultForceScale) {
+         diagnosticForceScale: Float = LiquidSimulation.diagnosticDefaultForceScale,
+         diagnosticAccelerationCap: Float = 3) {
         self.diagnosticForceScale = diagnosticForceScale
+        self.diagnosticAccelerationCap = diagnosticAccelerationCap.isFinite ? max(0.001, diagnosticAccelerationCap) : 3
         self.cohesionStrength = cohesionStrength.isFinite ? min(24, max(0, cohesionStrength)) : 0
         self.interfaceBubbles = interfaceBubbles
         reset()
@@ -183,7 +186,8 @@ final class LiquidSimulation {
 
     private func substep(motion: MotionSample) {
         let gravity = motion.safeGravity
-        let force = gravity * 5.8 - motion.safeAcceleration * diagnosticForceScale
+        let acceleration = cappedAcceleration(motion.acceleration)
+        let force = gravity * 5.8 - acceleration * diagnosticForceScale
         let dt = fixedStep
         for i in particles.indices {
             particles[i].previous = particles[i].position
@@ -303,7 +307,7 @@ final class LiquidSimulation {
         // the already-computed neighbour arrays used by the solver above.
         rebuildGrid()
         updateBoat(force: force, gravity: gravity, dt: dt)
-        updateBubbles(gravity: gravity, acceleration: motion.safeAcceleration, dt: dt)
+        updateBubbles(gravity: gravity, acceleration: acceleration, dt: dt)
         time += dt
         steps += 1
     }
@@ -571,6 +575,11 @@ final class LiquidSimulation {
 
     private func limited(_ v: SIMD3<Float>, to limit: Float) -> SIMD3<Float> {
         v / max(1, simd_length(v) / limit)
+    }
+
+    private func cappedAcceleration(_ acceleration: SIMD3<Float>) -> SIMD3<Float> {
+        guard acceleration.x.isFinite, acceleration.y.isFinite, acceleration.z.isFinite else { return .zero }
+        return acceleration / max(1, simd_length(acceleration) / diagnosticAccelerationCap)
     }
 
     private func random() -> Float {

@@ -6,22 +6,26 @@ import simd
 @main struct ShakeResponse {
     static func main() throws {
         let args = CommandLine.arguments
-        guard (4...6).contains(args.count), let scale = Float(args[1]),
+        guard (4...7).contains(args.count), let scale = Float(args[1]),
               ["translation", "roll", "pitch"].contains(args[2]),
               scale.isFinite && scale > 0 && scale <= 70 else {
-            fatalError("usage: shake-response force-scale translation|roll|pitch output-directory [frequency-Hz] [raw-amplitude-g]")
+            fatalError("usage: shake-response force-scale translation|roll|pitch output-directory [frequency-Hz] [raw-amplitude-g] [input-cap-g]")
         }
         let mode = args[2], output = URL(fileURLWithPath: args[3])
         let frequency = args.count > 4 ? (Float(args[4]) ?? .nan) : 2
         let amplitude = args.count > 5 ? (Float(args[5]) ?? .nan) : 1
-        guard frequency > 0 && frequency <= 6 && amplitude >= 0 && amplitude <= 24 else { fatalError("Invalid fixture") }
+        let inputCap = args.count > 6 ? (Float(args[6]) ?? .nan) : 3
+        guard frequency > 0 && frequency <= 6 && amplitude >= 0 && amplitude <= 24,
+              inputCap > 0 && inputCap <= 24 else { fatalError("Invalid fixture") }
         try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
-        let simulation = LiquidSimulation(diagnosticForceScale: scale)
+        let simulation = LiquidSimulation(diagnosticForceScale: scale, diagnosticAccelerationCap: inputCap)
         let count = simulation.particles.count
         var rows = "t,gx,gy,gz,ax,comX,comY,comZ,topY,leftTop,rightTop,energy,wallFraction,cpuMs,predictionCaps,constraintCaps\n"
         var timings: [Double] = []
         var finite = true
         var metrics: [[String: Any]] = []
+        var comCos: Float = 0, comSin: Float = 0, inputCos: Float = 0, inputSin: Float = 0
+        var responseSamples = 0, rawOverCapSamples = 0
         let began = ProcessInfo.processInfo.systemUptime
         // 2 s settling, 3 s / six cycles at 2 Hz, 3 s upright rest.
         for step in 0..<960 {
@@ -54,6 +58,16 @@ import simd
                     && simd_length(p.velocity).isFinite
             }
             let center = sum / Float(count), wallFraction = Float(wall) / Float(count)
+            if mode == "translation", t >= 3 && t < 5 {
+                let angle = (t - 2) * 2 * Float.pi * frequency
+                // The solver clips each instantaneous reading; it does not
+                // shrink the entire sine wave to the cap's amplitude.
+                let appliedInput = max(-inputCap, min(inputCap, motion.acceleration.x))
+                comCos += center.x * cos(angle); comSin += center.x * sin(angle)
+                inputCos += appliedInput * cos(angle); inputSin += appliedInput * sin(angle)
+                responseSamples += 1
+                if abs(motion.acceleration.x) > inputCap { rawOverCapSamples += 1 }
+            }
             let floats: [Float] = [t, motion.gravity.x, motion.gravity.y, motion.gravity.z,
                 motion.acceleration.x, center.x, center.y, center.z, top, left, right,
                 simulation.energy, wallFraction, Float(ms)]
@@ -65,7 +79,14 @@ import simd
             }
         }
         timings.sort()
+        let componentScale = responseSamples > 0 ? 2 / Float(responseSamples) : 0
+        let comFundamentalAmplitude = componentScale * sqrt(comCos * comCos + comSin * comSin)
+        let inputFundamentalAmplitude = componentScale * sqrt(inputCos * inputCos + inputSin * inputSin)
         let summary: [String: Any] = ["mode":mode,"forceScale":scale,"frequencyHz":frequency,"rawAccelerationAmplitudeG":amplitude,"particles":count,
+            "inputAccelerationCapG":inputCap,"inputFundamentalAmplitudeG":inputFundamentalAmplitude,
+            "comFundamentalAmplitude":comFundamentalAmplitude,"responseWindowSeconds":"3-5",
+            "rawOverInputCapFraction":responseSamples > 0 ? Float(rawOverCapSamples) / Float(responseSamples) : 0,
+            "restEnergy":simulation.energy,
             "steps":simulation.steps,"finite":finite,"cpuMedianStepMs":timings[timings.count/2],
             "cpuP95StepMs":timings[Int(Double(timings.count)*0.95)],
             "wallSeconds":ProcessInfo.processInfo.systemUptime-began,

@@ -66,6 +66,11 @@ struct LiquidMetalView: UIViewControllerRepresentable {
             }
             return samples
         }
+        renderer?.motionDiagnosticsProvider = { [weak motion] in
+            var snapshot = motion?.timingDiagnostics ?? [:]
+            snapshot["reducedMotion"] = reducedMotion ? 1 : 0
+            return snapshot
+        }
         view.updateOrientation()
         if artChanged && view.isPaused { view.draw() }
     }

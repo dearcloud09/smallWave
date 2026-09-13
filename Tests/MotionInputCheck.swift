@@ -6,12 +6,14 @@ struct MotionInputCheck {
     static func main() {
         var suite = MotionInputSuite()
         suite.run("100 Hz constant input preserves signed integral at 30 Hz", suite.constantInputPreservesIntegral)
+        suite.run("3 Hz vigorous input retains positive and negative peaks", suite.vigorousInputRetainsPeaks)
         suite.run("within-frame reversal keeps step order and net impulse", suite.reversalKeepsOrder)
         suite.run("3, 4, and 6 step plans honor remainder", suite.stepPlansHonorRemainder)
-        suite.run("overlap prefix and raw 3g cap cannot amplify force", suite.overlapPrefixDoesNotAmplify)
+        suite.run("overlap prefix and bounded input cannot amplify force", suite.overlapPrefixDoesNotAmplify)
         suite.run("stale, future, invalid, pause, and repeated requests are safe", suite.boundaryCases)
         suite.run("slow frame drops old input but retains recent window", suite.slowFrameUsesRecentWindow)
         suite.run("30/60 Hz jitter trace preserves ordered steps", suite.frameRateTraceIsInvariant)
+        suite.run("diagnostics saturate overflow, reject invalid samples, and reset", suite.diagnosticsStayFinite)
         print("PASS: \(suite.passed) ordered motion-input checks")
     }
 }
@@ -43,6 +45,30 @@ private struct MotionInputSuite {
         // Startup intentionally suppresses the first unfinished sensor interval;
         // after that, the 1 s trace may defer at most one 10 ms interval.
         try require(impulse >= 1.98 && impulse <= 2.0002, "100 Hz / 30 Hz integral changed: \(impulse)")
+    }
+
+    func vigorousInputRetainsPeaks() throws {
+        var history = MotionInputHistory()
+        append(&history, at: 0, acceleration: .zero)
+        _ = history.samples(for: plan(1), at: 0)
+        var nextSensor = 0.01
+        var values: [Float] = []
+        for frame in 1...30 {
+            let draw = Double(frame) / 30 + 0.004
+            while nextSensor <= draw {
+                let acceleration = Float(sin(nextSensor * 6 * Double.pi)) * 9
+                append(&history, at: nextSensor, acceleration: SIMD3(acceleration, 0, 0))
+                nextSensor += 0.01
+            }
+            values += history.samples(for: plan(4), at: draw).map(\.acceleration.x)
+        }
+        let positive = values.max() ?? 0, negative = values.min() ?? 0
+        let absoluteImpulse = values.reduce(Float(0)) { $0 + abs($1) * step }
+        try require(positive > 8.5 && negative < -8.5,
+                    "vigorous peaks were lost: positive=\(positive), negative=\(negative)")
+        try require(absoluteImpulse > 5.3 && absoluteImpulse < 5.8,
+                    "three-cycle impulse changed: \(absoluteImpulse)")
+        print("METRIC: 3Hz applied peaks=\(positive)/\(negative), absolute impulse=\(absoluteImpulse)")
     }
 
     func reversalKeepsOrder() throws {
@@ -88,14 +114,14 @@ private struct MotionInputSuite {
         var history = MotionInputHistory()
         append(&history, at: 0, acceleration: .zero)
         _ = history.samples(for: plan(1), at: 0)
-        append(&history, at: 0.03, acceleration: SIMD3(100, 0, 0)) // input cap is 3g
+        append(&history, at: 0.03, acceleration: SIMD3(100, 0, 0)) // bounded before averaging
         append(&history, at: 0.04, acceleration: .zero)
         _ = history.samples(for: plan(4), at: 4.0 / 120) // consumes through 1/30
         let suffix = history.samples(for: plan(1), at: 0.04)[0]
-        try require(abs(suffix.acceleration.x - 2.4) < 0.0002,
+        try require(abs(suffix.acceleration.x - 9.6) < 0.0002,
                     "partial prefix was renormalized: \(suffix.acceleration.x)")
-        try require(simd_length(suffix.acceleration) <= 3.0001,
-                    "raw 3g cap was amplified: \(suffix.acceleration)")
+        try require(simd_length(suffix.acceleration) <= 12.0001,
+                    "raw input cap was amplified: \(suffix.acceleration)")
     }
 
     func boundaryCases() throws {
@@ -159,6 +185,35 @@ private struct MotionInputSuite {
                         nearlyEqual(at30[index].acceleration, irregular[index].acceleration, tolerance: 0.0003),
                         "frame schedule changed step \(index): \(at30[index].acceleration), \(at60[index].acceleration), \(irregular[index].acceleration)")
         }
+    }
+
+    func diagnosticsStayFinite() throws {
+        var history = MotionInputHistory()
+        let huge = SIMD3<Float>(repeating: .greatestFiniteMagnitude)
+        history.append(gravity: SIMD3(0, -1, 0), acceleration: huge,
+                       timestamp: -Double.greatestFiniteMagnitude,
+                       receivedAt: Double.greatestFiniteMagnitude, rotationRate: huge)
+        let accepted = history.diagnostics
+        try require(accepted.receivedSamples == 1 && accepted.samplesAbove3G == 1,
+                    "valid huge input was not counted once: \(accepted)")
+        try require(accepted.maximumRawAccelerationG.isFinite &&
+                    accepted.maximumRawAccelerationG == .greatestFiniteMagnitude &&
+                    accepted.maximumRotationRateRadPerSec.isFinite &&
+                    accepted.maximumRotationRateRadPerSec == .greatestFiniteMagnitude &&
+                    accepted.maximumSampleAgeMs.isFinite &&
+                    accepted.maximumSampleAgeMs == .greatestFiniteMagnitude,
+                    "diagnostics overflowed: \(accepted)")
+        history.append(gravity: SIMD3(0, -1, 0), acceleration: SIMD3(Float.nan, 0, 0),
+                       timestamp: 0, receivedAt: 0)
+        history.append(gravity: SIMD3(0, -1, 0), acceleration: .zero,
+                       timestamp: -Double.greatestFiniteMagnitude, receivedAt: 0)
+        try require(history.diagnostics == accepted, "rejected input changed diagnostics")
+        history.reset()
+        let reset = history.diagnostics
+        try require(reset.receivedSamples == 0 && reset.lastSampleTimestamp == nil &&
+                    reset.maximumRawAccelerationG == 0 && reset.samplesAbove3G == 0 &&
+                    reset.maximumRotationRateRadPerSec == 0 && reset.maximumSampleAgeMs == 0,
+                    "reset retained diagnostics: \(reset)")
     }
 
     private func replay(_ schedule: [Float]) -> [MotionSample] {

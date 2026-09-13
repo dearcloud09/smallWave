@@ -17,7 +17,8 @@ struct OceanView: View {
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("smallwave.sound") private var sound = false
     @AppStorage("smallwave.haptics") private var haptics = true
-    @AppStorage("smallwave.reducedMotion") private var reducedMotion = false
+    @AppStorage("smallwave.reducedMotion") private var legacyReducedMotion = false
+    @AppStorage("smallwave.motionResponse") private var motionResponseID = -1
     @AppStorage("smallwave.miniature") private var miniatureID = MiniatureStyle.sunday.rawValue
     @State private var settings = false
     @State private var paused = false
@@ -25,6 +26,9 @@ struct OceanView: View {
 
     private let ink = Color(red: 0.16, green: 0.26, blue: 0.28)
     private var miniatureStyle: MiniatureStyle { MiniatureStyle(rawValue: miniatureID) ?? .sunday }
+    private var motionResponse: OceanMotionResponse {
+        .resolve(savedValue: motionResponseID, legacyGentle: legacyReducedMotion)
+    }
 
     var body: some View {
         ZStack {
@@ -32,7 +36,7 @@ struct OceanView: View {
             LiquidMetalView(motion: motion, controls: controls,
                             active: scenePhase == .active && !paused && !settings,
                             sound: sound, haptics: haptics,
-                            reducedMotion: reducedMotion || systemReduceMotion,
+                            reducedMotion: motionResponse.reducesMotion(systemPreference: systemReduceMotion),
                             miniatureStyle: miniatureStyle)
                 .ignoresSafeArea()
                 .accessibilityLabel("푸른 액체와 작은 범선. \(miniatureStyle.detail). 아이폰을 기울이고 흔들어봐.")
@@ -145,11 +149,23 @@ struct OceanView: View {
                             Text(message).font(.caption).foregroundStyle(ink)
                         }
                         Toggle("잔잔한 진동", isOn: $haptics)
-                        Toggle("흔들림 줄이기", isOn: $reducedMotion)
                     } header: {
                         Text("감각")
                     } footer: {
                         Text("물소리는 설정을 닫고 기울이거나 흔들 때 나. 아이폰 무음 모드에서는 들리지 않아.")
+                    }
+                    Section {
+                        Picker("흔들림 반응", selection: Binding(
+                            get: { motionResponse.rawValue },
+                            set: { motionResponseID = $0 }
+                        )) {
+                            ForEach(OceanMotionResponse.allCases) { response in
+                                Text(response.title).tag(response.rawValue)
+                            }
+                        }
+                        .pickerStyle(.inline)
+                    } footer: {
+                        Text(motionResponse.detail(systemPreference: systemReduceMotion))
                     }
                     Section {
                         Button("바다를 다시 가라앉히기") {

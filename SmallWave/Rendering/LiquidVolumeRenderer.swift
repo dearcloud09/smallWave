@@ -9,6 +9,7 @@ final class LiquidVolumeRenderer {
     // Optional lighting input for the offscreen comparison harness; not loaded by the app.
     var environment: MTLTexture?
     var miniatureTexture: MTLTexture?
+    var surfaceFilter = SIMD4<Float>(1, 0, 1, 0)
     // Native rendering enables analytic air boundaries. Archived two-medium
     // shader comparisons can still request the carved scalar field.
     var tracesAirBubbles = false
@@ -76,7 +77,8 @@ final class LiquidVolumeRenderer {
                 particles: MTLBuffer, particleCount: Int, bubbles: MTLBuffer, bubbleCount: Int,
                 uniforms: OceanUniforms) throws {
         try field.encode(commandBuffer: command, particles: particles, particleCount: particleCount,
-                         bubbles: bubbles, bubbleCount: tracesAirBubbles ? 0 : bubbleCount)
+                         bubbles: bubbles, bubbleCount: tracesAirBubbles ? 0 : bubbleCount,
+                         surfaceFilter: surfaceFilter)
         try encodeTransport(command: command, target: target, diagnostics: diagnostics, uniforms: uniforms,
                             bubbles: bubbles, bubbleCount: tracesAirBubbles ? bubbleCount : 0)
     }

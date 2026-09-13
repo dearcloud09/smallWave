@@ -46,14 +46,31 @@ kernel void liveFieldWall(texture2d_array<float, access::read> source [[texture(
     target.write(float4(min(source.read(id.xy, id.z).r, coating)), id.xy, id.z);
 }
 
-kernel void liveFieldFilterX(texture2d_array<float, access::read> source [[texture(0)]],
+kernel void liveFieldFilterX(texture2d_array<float, access::sample> source [[texture(0)]],
                              texture2d_array<float, access::write> target [[texture(1)]],
+                             constant float4 &surfaceFilter [[buffer(0)]],
                              uint3 id [[thread_position_in_grid]]) {
     if (id.x >= liveFieldWidth || id.y >= liveFieldHeight || id.z >= liveFieldDepth) return;
     float a = source.read(uint2(liveFieldClamp(int(id.x)-1, liveFieldWidth), id.y), id.z).r;
     float b = source.read(id.xy, id.z).r;
     float c = source.read(uint2(liveFieldClamp(int(id.x)+1, liveFieldWidth), id.y), id.z).r;
-    target.write(float4((a + 4.0*b + c) / 6.0), id.xy, id.z);
+    float narrow = (a + 4.0*b + c) / 6.0;
+    if (surfaceFilter.w <= 0) {
+        target.write(float4(narrow), id.xy, id.z);
+        return;
+    }
+    // Smooth along the settled free surface, not through its normal/depth.
+    // Reflected sampling supplies the continuation at all four solid walls.
+    constexpr sampler mirror(coord::normalized, address::mirrored_repeat, filter::linear);
+    constexpr float weights[9] = {1,8,28,56,70,56,28,8,1};
+    float2 uv = (float2(id.xy) + 0.5) / float2(liveFieldWidth, liveFieldHeight);
+    float spacing = 0.147 * sqrt(max(0.0, surfaceFilter.z * surfaceFilter.z - 1.0) / 22.0);
+    float2 step = spacing * float2(surfaceFilter.x, -surfaceFilter.y) / float2(2.0, 4.24);
+    float wide = 0;
+    for (int tap = -4; tap <= 4; ++tap) {
+        wide += weights[tap + 4] * source.sample(mirror, uv + float(tap) * step, id.z).r;
+    }
+    target.write(float4(mix(narrow, wide / 256.0, surfaceFilter.w)), id.xy, id.z);
 }
 
 kernel void liveFieldFilterY(texture2d_array<float, access::read> source [[texture(0)]],
