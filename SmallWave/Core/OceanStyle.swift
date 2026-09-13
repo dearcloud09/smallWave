@@ -59,7 +59,7 @@ enum MiniatureStyle: Int, CaseIterable, Identifiable {
         switch self {
         case .sunday: return "마린 블루"
         case .harbour: return "햇살 옐로"
-        case .drift: return "브릭 레드"
+        case .drift: return "토마토 레드"
         }
     }
     var detail: String {

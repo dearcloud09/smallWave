@@ -269,7 +269,7 @@ float4 craftedMiniature(float2 world, constant OceanUniforms &u,
               *smoothstep(0.015,0.07,material.g-material.r)
               *smoothstep(0.58,0.62,uv.y);
     float shade=clamp(dot(material,float3(0.2126,0.7152,0.0722))/0.34,0.12,1.55);
-    float3 paint=variant==1 ? float3(0.93,0.71,0.32) : float3(0.76,0.235,0.17);
+    float3 paint=variant==1 ? float3(0.93,0.71,0.32) : float3(212.0/255.0,76.0/255.0,56.0/255.0);
     float3 color=mix(material,clamp(paint*shade,0.0,1.0),hull);
     // The red version has a navy ring so the single little accessory stays clear.
     if(variant==2) {
